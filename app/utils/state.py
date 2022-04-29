@@ -13,4 +13,4 @@ state.set({'appname': APPNAME,
            'launch_delay': LAUNCH_DELAY,
            'urlchange_delay': URLCHANGE_DELAY,
            'single_elements': [],
-           'list_elements': []})
+           'multiple_elements': []})
