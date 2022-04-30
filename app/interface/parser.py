@@ -12,6 +12,7 @@ from at.logger import log
 from at.result import Result
 from atparser.app.settings import *
 from atparser.app.utils import paths, state
+from atparser.app.core import SeleniumEngine
 from PyQt5.QtCore import Qt, QThreadPool, pyqtSignal
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
@@ -27,9 +28,12 @@ class ParserTab(QWidget):
                  *args,
                  **kwargs) -> None:
         super().__init__(parent=parent, *args, **kwargs)
+        self.engine = SeleniumEngine()
         self.setupUi(size)
         self.threadpool = QThreadPool(parent=self)
         self.popup = Popup(state['appname'])
+
+        self.parseFromCombo.subscribe(self.onParseFromChange)
 
     def setupUi(self, size):
         set_size(widget=self, size=size)
@@ -37,47 +41,51 @@ class ParserTab(QWidget):
         layout = QVBoxLayout()
         layout.setContentsMargins(2, 4, 2, 0)
 
-        modesLayout = QHBoxLayout()
-        checksLayout = QHBoxLayout()
+        urlLayout = QHBoxLayout()
+        engineChecksLayout = QVBoxLayout()
+        paramsLayout = QHBoxLayout()
         buttonLayout = QHBoxLayout()
+        historyLayout = QHBoxLayout()
+        parseFromLayout = QHBoxLayout()
+        actionElemLayout = QVBoxLayout()
+        interactionLayout = QVBoxLayout()
+
+        self.url = StrInput(label='URL',
+                            parent=self)
+
+        self.buttonLaunch = Button(label='Launch',
+                                   parent=self)
 
         self.engineCombo = ComboInput(label='Engine',
                                       items=('selenium', 'bs4'),
                                       parent=self)
 
-        self.driverCheck = CheckInput(label='Driver',
-                                      checked=True,
-                                      parent=self)
-
-        self.activeElemCheck = CheckInput(label='Active element',
-                                          checked=False,
-                                          parent=self)
-
-        self.activeElemsCheck = CheckInput(label='Active elements',
-                                           checked=False,
+        self.parseFromCombo = ComboInput(label='Parse from',
+                                         items=('Driver',
+                                                'Active element',
+                                                'History'),
+                                         parent=self)
+        self.parseFromStatus = StatusLabel(statussize=(340, 22),
                                            parent=self)
 
-        self.historyCheck = CheckInput(label='From history',
-                                       checked=False,
-                                       parent=self)
-
         self.history = ComboInput(label='History',
-                                  combosize=(400, 24),
+                                  combosize=(500, 24),
                                   parent=self)
 
-        self.originCombo = ComboInput(label='Origin',
-                                      items=('single', 'multiple'),
-                                      parent=self)
+        self.setActiveFromHistory = Button(label='Set active',
+                                           size=(100, 24),
+                                           parent=self)
 
         self.targetCombo = ComboInput(label='Target',
                                       items=('single', 'multiple'),
                                       parent=self)
 
-        self.findParams = StrSelector(label='Parameters',
-                                      mapping=FIND_PARAMS,
-                                      combosize=(100, 24),
-                                      editsize=(500, 24),
-                                      parent=self)
+        self.findParams = ComboInput(label='Params',
+                                     items=FIND_PARAMS,
+                                     combosize=(80, 24),
+                                     parent=self)
+
+        self.elementParams = StrInput(parent=self)
 
         self.buttonFind = Button(label='Find Element',
                                  color='blue',
@@ -86,28 +94,46 @@ class ParserTab(QWidget):
         self.buttonSetActive = Button(label='Set active',
                                       size=(150, 24),
                                       parent=self)
-        self.buttonStore = Button(label='Store',
+        self.buttonStore = Button(label='Add to history',
                                         size=(150, 24),
                                         parent=self)
+
+        self.buttonClick = Button(label='Click',
+                                        size=(150, 24),
+                                        parent=self)
+        self.buttonScroll = Button(label='Scroll down',
+                                   size=(150, 24),
+                                   parent=self)
+
         self.status = StatusButton(parent=self)
 
-        layout.addWidget(self.engineCombo)
+        self.parseFromStatus.setText('Driver')
+
+        urlLayout.addWidget(self.url)
+        urlLayout.addWidget(self.buttonLaunch)
+        layout.addLayout(urlLayout)
         layout.addWidget(HLine())
-        checksLayout.addWidget(self.driverCheck)
-        checksLayout.addWidget(self.activeElemCheck)
-        checksLayout.addWidget(self.activeElemsCheck)
-        checksLayout.addWidget(self.historyCheck)
-        layout.addLayout(checksLayout)
-        layout.addWidget(self.history)
+        parseFromLayout.addWidget(self.parseFromCombo)
+        parseFromLayout.addWidget(self.parseFromStatus, stretch=2)
+        engineChecksLayout.addWidget(self.engineCombo)
+        engineChecksLayout.addLayout(parseFromLayout)
+        layout.addLayout(engineChecksLayout)
+        historyLayout.addWidget(self.history)
+        historyLayout.addWidget(self.setActiveFromHistory)
+        layout.addLayout(historyLayout)
         layout.addWidget(HLine())
-        modesLayout.addWidget(self.originCombo)
-        modesLayout.addWidget(self.targetCombo)
-        layout.addLayout(modesLayout)
-        layout.addWidget(self.findParams)
+        layout.addWidget(self.targetCombo)
+        paramsLayout.addWidget(self.findParams)
+        paramsLayout.addWidget(self.elementParams, stretch=2)
+        layout.addLayout(paramsLayout)
         layout.addWidget(HLine())
-        buttonLayout.addWidget(self.buttonFind)
-        buttonLayout.addWidget(self.buttonSetActive)
-        buttonLayout.addWidget(self.buttonStore)
+        interactionLayout.addWidget(self.buttonClick)
+        interactionLayout.addWidget(self.buttonScroll)
+        actionElemLayout.addWidget(self.buttonSetActive)
+        actionElemLayout.addWidget(self.buttonStore)
+        buttonLayout.addWidget(self.buttonFind, alignment=Qt.AlignCenter)
+        buttonLayout.addLayout(actionElemLayout)
+        buttonLayout.addLayout(interactionLayout)
         layout.addLayout(buttonLayout)
         layout.addWidget(self.status, stretch=2, alignment=Qt.AlignBottom)
         self.setLayout(layout)
@@ -145,6 +171,19 @@ class ParserTab(QWidget):
 
     def updateFinish(self):
         pass
+
+    def onParseFromChange(self):
+        combo_text = self.parseFromCombo.getCurrentText()
+
+        if combo_text == 'Driver':
+            self.parseFromStatus.setText('Driver')
+            self.history.clearItems()
+        elif combo_text == 'Active element':
+            self.parseFromStatus.setText(self.engine.active_element_name)
+            self.history.clearItems()
+        else:
+            self.parseFromStatus.setText('History')
+            self.history.addItems(state['history'].keys())
 
 
 if __name__ == '__main__':

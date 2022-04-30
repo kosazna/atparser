@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from selenium import webdriver
-from typing import Optional, List, Union
+from typing import Optional, List, Union, Dict
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -13,9 +13,12 @@ from at.logger import log
 class SeleniumEngine:
     def __init__(self) -> None:
         self.driver = None
-        self.active_element: Optional[WebElement] = None
-        self.active_elements: List[WebElement] = []
-        self.found_element = Optional[Union[list,WebElement]] = None
+        self.active_element_name: str = ''
+        self.active_element: Optional[Union[WebElement,
+                                            List[WebElement]]] = None
+        self.found_element_name: str = ''
+        self.found_element: Optional[Union[WebElement,
+                                           List[WebElement]]] = None
 
     def go_to(self, url: str):
         self.driver.get(url)
@@ -82,59 +85,47 @@ class SeleniumEngine:
              on: Union[str, WebElement],
              by: str,
              element: str,
-             set_active: bool = False,
-             origin: str = 'single',
-             mode: str = 'single',
-             store: bool = False):
+             target: str = 'single'):
 
         if isinstance(on, str):
-            if on == 'driver':
+            if on == 'Driver':
                 container = self.driver
-            elif on == 'active element':
+            else:
                 container = self.active_element
-            elif on == 'active elements':
-                container = self.active_elements
         else:
             container = on
 
-        if origin == 'multiple':
-            if isinstance(container, list):
-                _element = [self._find_element(
-                    el, by, element, mode) for el in container]
-            else:
-                return log.error(
-                    "Origin element must be a list if 'origin=multiple'")
+        if isinstance(container, list):
+            _element = [self._find_element(
+                el, by, element, target) for el in container]
         else:
-            if isinstance(container, list):
-                return log.error(
-                    "Origin element must not be a list if 'origin=single'")
-            else:
-                _element = self._find_element(container, by, element, mode)
+            _element = self._find_element(container, by, element, target)
 
-        if _element is not None:
-            self.found_element = _element
-            if mode == 'single' and origin == 'single':
-                log.success("Element found:\n")
-                log.info(_element)
-            else:
+        if _element is not None and any(_element):
+            if isinstance(_element, list):
                 log.success(f"[{len(_element)}] elements found:\n")
                 for idx, el in enumerate(_element):
                     log.info(f"{idx} - {el}\n")
+                name_tag = f"{len(_element)} | {by} | {element}"
+            else:
+                log.success("Element found:\n")
+                log.info(_element)
+                name_tag = f"Single | {by} | {element}"
+            self.found_element_name = name_tag
+            self.found_element = _element
         else:
             log.warning(f"Element wasn't found with {by}: {element}")
 
-    def set_active(self, element:Union[list,WebElement]):
-        if isinstance(element, list):
-            self.active_elements = element 
-            log.success("\nActive elements changed.")
-        else:
-            self.active_element = element   
-            log.success("\nActive element changed.")
+    def set_active(self):
+        self.active_element = self.found_element
+        self.active_element_name = self.found_element_name
+        log.success("\nActive element changed.\n")
 
-    def store_element(self, element:Union[list,WebElement]):
-        if isinstance(element, list):
-            state['multiple_elements'].append(element)
-            log.success("Elements stored.\n")
-        else:
-            state['single_elements'].append(element)
-            log.success("Element stored.\n")
+    def set_active_from_history(self, element:str):
+        self.active_element = state['history'][element]
+        self.active_element_name = element
+        log.success("\nActive element changed from history.\n")
+
+    def store_element(self):
+        state['history'].update({self.found_element_name: self.found_element})
+        log.success("\nElement stored.\n")
