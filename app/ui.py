@@ -6,7 +6,7 @@ from at.gui.components import Console
 from at.gui.utils import set_size
 from at.logger import log
 from atparser.app.utils import paths, state
-from atparser.app.interface import SettingsTab
+from atparser.app.interface import SettingsTab, ParserTab
 from atparser.app.settings import *
 from PyQt5.QtCore import Qt, QThreadPool, pyqtSlot
 from PyQt5.QtGui import QFont
@@ -46,8 +46,8 @@ class WebParserUI(QWidget):
 
         self.settingsTab = SettingsTab(size=(700, None), parent=self)
         self.tabs.addTab(self.settingsTab, "Settings")
-        # self.filesTab = FilesTab(size=(700, None), parent=self)
-        # self.tabs.addTab(self.filesTab, "Ενημέρωση")
+        self.parserTab = ParserTab(size=(700, None), parent=self)
+        self.tabs.addTab(self.parserTab, "Parsers")
         # self.countTab = CountTab(size=(700, None), parent=self)
         # self.tabs.addTab(self.countTab, "Καταμέτρηση")
         # self.paradosiTab = ParadosiTab(size=(700, None), parent=self)
