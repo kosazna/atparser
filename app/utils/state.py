@@ -8,7 +8,7 @@ state = State()
 state.set({'appname': APPNAME,
            'version': VERSION,
            'debug': DEBUG,
-           'webdriver': 'firefox',
+           'webdriver': 'Firefox',
            'paginator_delay': PAGINATOR_DELAY,
            'launch_delay': LAUNCH_DELAY,
            'urlchange_delay': URLCHANGE_DELAY,

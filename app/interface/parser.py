@@ -34,6 +34,8 @@ class ParserTab(QWidget):
         self.popup = Popup(state['appname'])
 
         self.parseFromCombo.subscribe(self.onParseFromChange)
+        self.buttonLaunch.subscribe(self.onLaunch)
+        self.buttonFind.subscribe(self.onFindElement)
 
     def setupUi(self, size):
         set_size(widget=self, size=size)
@@ -185,6 +187,41 @@ class ParserTab(QWidget):
             self.parseFromStatus.setText('History')
             self.history.addItems(state['history'].keys())
 
+    def findElement(self, _progress):
+        parse_from = self.parseFromCombo.getCurrentText()
+
+        if parse_from == 'History':
+            _element = self.history.getCurrentText()
+            origin = state['history'][_element]
+        else:
+            origin = parse_from
+
+        by = self.findParams.getCurrentText()
+        element = self.elementParams.getText()
+        target = self.targetCombo.getCurrentText()
+
+        self.engine.find(origin=origin,
+                         by=by,
+                         element=element,
+                         target=target)
+
+    def onFindElement(self):
+        run_thread(threadpool=self.threadpool,
+                   function=self.findElement,
+                   on_update=self.updateProgress,
+                   on_result=self.updateResult,
+                   on_finish=self.updateFinish)
+
+    def onLaunch(self):
+        _webdriver = state['webdriver']
+        _url = self.url.getText()
+
+        if _webdriver == 'Firefox':
+            _webdriver_exe = paths.get_firefoxdriver()
+        else:
+            _webdriver_exe = paths.get_chromedriver()
+
+        self.engine.launch(_webdriver, _webdriver_exe, _url)
 
 if __name__ == '__main__':
     cssGuide = paths.get_css(obj=True).joinpath("_style.css").read_text()

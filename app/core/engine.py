@@ -29,7 +29,7 @@ class SeleniumEngine:
     def terminate(self):
         self.driver.close()
 
-    def launch(self, browser: str, executable: str):
+    def launch(self, browser: str, executable: str, url:str):
         if browser == 'Chrome':
             chrome_options = Options()
             chrome_options.add_argument("--start-maximized")
@@ -48,7 +48,7 @@ class SeleniumEngine:
             print(f'Browser not supported: {browser}')
             return
 
-        self.driver.get(self.url)
+        self.driver.get(url)
         sleep(state['launch_delay'])
 
     def _find_element(self, container, by, element, mode: str = 'single'):
@@ -82,18 +82,18 @@ class SeleniumEngine:
         return _element
 
     def find(self,
-             on: Union[str, WebElement],
+             origin: Union[str, WebElement],
              by: str,
              element: str,
              target: str = 'single'):
 
-        if isinstance(on, str):
-            if on == 'Driver':
+        if isinstance(origin, str):
+            if origin == 'Driver':
                 container = self.driver
             else:
                 container = self.active_element
         else:
-            container = on
+            container = origin
 
         if isinstance(container, list):
             _element = [self._find_element(
@@ -101,7 +101,7 @@ class SeleniumEngine:
         else:
             _element = self._find_element(container, by, element, target)
 
-        if _element is not None and any(_element):
+        if _element is not None:
             if isinstance(_element, list):
                 log.success(f"[{len(_element)}] elements found:\n")
                 for idx, el in enumerate(_element):
@@ -109,7 +109,7 @@ class SeleniumEngine:
                 name_tag = f"{len(_element)} | {by} | {element}"
             else:
                 log.success("Element found:\n")
-                log.info(_element)
+                log.info(_element.text)
                 name_tag = f"Single | {by} | {element}"
             self.found_element_name = name_tag
             self.found_element = _element

@@ -54,7 +54,7 @@ class SettingsTab(QWidget):
         self.driverSelect = ComboInput(label="WebDriver",
                                        labelsize=(140, 24),
                                        combosize=(100, 24),
-                                       items=('firefox', 'chrome'),
+                                       items=('Firefox', 'Chrome'),
                                        parent=self)
 
         self.driverExist = StatusLabel(icon='hdd-network-fill',

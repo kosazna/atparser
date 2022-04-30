@@ -1,0 +1,77 @@
+1651352291822	geckodriver	INFO	Listening on 127.0.0.1:52983
+1651352294909	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileClFZf5"
+1651352295212	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileClFZf5\\search.json.mozlz4", (void 0)))
+1651352296724	Marionette	INFO	Listening on port 53005
+Read port: 53005
+1651352296836	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+JavaScript error: , line 0: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+JavaScript error: , line 0: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+console.error: services.settings: 
+  main/public-suffix-list Signature failed  InvalidSignatureError: Invalid content signature (main/public-suffix-list)
+console.error: services.settings: 
+  main/public-suffix-list local data was corrupted
+console.warn: services.settings: main/public-suffix-list Signature verified failed. Retry from scratch
+console.error: services.settings: 
+  main/public-suffix-list Signature failed again InvalidSignatureError: Invalid content signature (main/public-suffix-list)
+console.error: services.settings: 
+  Message: InvalidSignatureError: Invalid content signature (main/public-suffix-list)
+  Stack:
+    InvalidSignatureError@resource://services-settings/RemoteSettingsClient.jsm:135:5
+_validateCollectionSignature@resource://services-settings/RemoteSettingsClient.jsm:875:13
+
+console.error: services.settings: 
+  main/doh-providers Signature failed  InvalidSignatureError: Invalid content signature (main/doh-providers)1651352745614	Marionette	INFO	Stopped listening on port 51762
+
+###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
+
+.settings: 
+  main/doh-config Signature failed  InvalidSignatureError: Invalid content signature (main/doh-config)
+console.error: services.settings: 
+  main/doh-config local data was corrupted
+console.warn: services.settings: main/doh-config Signature verified failed. Retry from scratch
+console.error: services.settings: 
+  main/search-config Signature failed  InvalidSignatureError: Invalid content signature (main/search-config)
+console.error: services.settings: 
+  main/search-config local data was corrupted
+console.warn: services.settings: main/search-config Signature verified failed. Retry from scratch
+1651352744022	Marionette	INFO	Stopped listening on port 53005
+
+###!!! [Child][PContentChild] Error: RunMessage(msgname=PContent::Msg_DestroyBrowsingContextGroup) Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
+
+1651352767728	geckodriver	INFO	Listening on 127.0.0.1:59118
+1651352770802	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilej8nqCu"
+1651352771075	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilej8nqCu\\search.json.mozlz4", (void 0)))
+1651352772573	Marionette	INFO	Listening on port 59139
+Read port: 59139
+1651352772688	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+1651353100443	Marionette	INFO	Stopped listening on port 59139
+1352908147	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileJPwlxw"
+1651352908412	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileJPwlxw\\search.json.mozlz4", (void 0)))
+1651352909891	Marionette	INFO	Listening on port 52745
+Read port: 52745
+1651352909927	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+1651353098995	Marionette	INFO	Stopped listening on port 52745
+
+###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
+
+\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileoGSimq"
+1651353008716	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileoGSimq\\search.json.mozlz4", (void 0)))
+1651353010217	Marionette	INFO	Listening on port 52841
+Read port: 52841
+1651353010249	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+1651353048068	Marionette	INFO	Stopped listening on port 52841
