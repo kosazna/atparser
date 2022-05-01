@@ -12,4 +12,4 @@ state.set({'appname': APPNAME,
            'paginator_delay': PAGINATOR_DELAY,
            'launch_delay': LAUNCH_DELAY,
            'urlchange_delay': URLCHANGE_DELAY,
-           'history': {'Single | xpath | sdfsdf': 'sd'}})
+           'history': {}})

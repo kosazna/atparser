@@ -157,3 +157,185 @@ A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
 
 ###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
 
+1651424607935	geckodriver	INFO	Listening on 127.0.0.1:53852
+1651424611005	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilec4mfJf"
+1651424611705	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilec4mfJf\\search.json.mozlz4", (void 0)))
+1651424613877	Marionette	INFO	Listening on port 53876
+Read port: 53876
+1651424613985	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+console.error: services.settings: 
+  main/doh-providers Signature failed  InvalidSignatureError: Invalid content signature (main/doh-providers)
+console.error: services.settings: 
+  main/doh-providers local data was corrupted
+console.warn: services.settings: main/doh-providers Signature verified failed. Retry from scratch
+console.error: services.settings: 
+  main/doh-config Signature failed  InvalidSignatureError: Invalid content signature (main/doh-config)
+console.error: services.settings: 
+  main/doh-config local data was corrupted
+console.warn: services.settings: main/doh-config Signature verified failed. Retry from scratch
+console.error: services.settings: 
+  main/search-config Signature failed  InvalidSignatureError: Invalid content signature (main/search-config)
+console.error: services.settings: 
+  main/search-config local data was corrupted
+console.warn: services.settings: main/search-config Signature verified failed. Retry from scratch
+JavaScript error: resource://gre/modules/AsyncShutdown.jsm, line 575: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+JavaScript error: resource://gre/modules/AsyncShutdown.jsm, line 575: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+1651425279802	Marionette	INFO	Stopped listening on port 53876
+JavaScript error: chrome://remote/content/marionette/cert.js, line 55: NS_ERROR_NOT_AVAILABLE: Component returned failure code: 0x80040111 (NS_ERROR_NOT_AVAILABLE) [nsICertOverrideService.setDisableAllSecurityChecksAndLetAttackersInterceptMyData]
+
+###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
+
+1651425726487	geckodriver	INFO	Listening on 127.0.0.1:56004
+1651425729587	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileKGN8mq"
+1651425729891	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileKGN8mq\\search.json.mozlz4", (void 0)))
+1651425731513	Marionette	INFO	Listening on port 56028
+Read port: 56028
+1651425731587	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+1651425847268	Marionette	INFO	Stopped listening on port 56028
+
+###!!! [Child][PContentChild] Error: RunMessage(msgname=PContent::Msg_DestroyBrowsingContextGroup) Channel closing: too late to send/recv, messages will be lost
+
+JavaScript error: chrome://remote/content/marionette/cert.js, line 55: NS_ERROR_NOT_AVAILABLE: Component returned failure code: 0x80040111 (NS_ERROR_NOT_AVAILABLE) [nsICertOverrideService.setDisableAllSecurityChecksAndLetAttackersInterceptMyData]
+
+###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
+
+1651425977430	geckodriver	INFO	Listening on 127.0.0.1:59722
+1651425980511	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileryFm6W"
+1651425980811	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileryFm6W\\search.json.mozlz4", (void 0)))
+1651425982348	Marionette	INFO	Listening on port 59743
+Read port: 59743
+1651425982400	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+1651426237245	Marionette	INFO	Stopped listening on port 59743
+JavaScript error: chrome://remote/content/marionette/cert.js, line 55: NS_ERROR_NOT_AVAILABLE: Component returned failure code: 0x80040111 (NS_ERROR_NOT_AVAILABLE) [nsICertOverrideService.setDisableAllSecurityChecksAndLetAttackersInterceptMyData]
+
+###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
+
+1651428266440	geckodriver	INFO	Listening on 127.0.0.1:59304
+1651428269518	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilefy0E2K"
+1651428269842	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilefy0E2K\\search.json.mozlz4", (void 0)))
+1651428271355	Marionette	INFO	Listening on port 59326
+Read port: 59326
+1651428271435	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+1651428299275	Marionette	INFO	Stopped listening on port 59326
+JavaScript error: chrome://remote/content/marionette/cert.js, line 55: NS_ERROR_NOT_AVAILABLE: Component returned failure code: 0x80040111 (NS_ERROR_NOT_AVAILABLE) [nsICertOverrideService.setDisableAllSecurityChecksAndLetAttackersInterceptMyData]
+1651429758689	geckodriver	INFO	Listening on 127.0.0.1:61618
+1651429761769	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileW6qhhv"
+1651429762008	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileW6qhhv\\search.json.mozlz4", (void 0)))
+1651429763483	Marionette	INFO	Listening on port 61639
+Read port: 61639
+1651429763538	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+1651429817491	Marionette	INFO	Stopped listening on port 61639
+JavaScript error: chrome://remote/content/marionette/cert.js, line 55: NS_ERROR_NOT_AVAILABLE: Component returned failure code: 0x80040111 (NS_ERROR_NOT_AVAILABLE) [nsICertOverrideService.setDisableAllSecurityChecksAndLetAttackersInterceptMyData]
+1651429897358	geckodriver	INFO	Listening on 127.0.0.1:61709
+1651429900423	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileQQOZSp"
+1651429900678	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileQQOZSp\\search.json.mozlz4", (void 0)))
+1651429902316	Marionette	INFO	Listening on port 61731
+Read port: 61731
+1651429902425	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+console.error: services.settings: 
+  main/public-suffix-list Signature failed  InvalidSignatureError: Invalid content signature (main/public-suffix-list)
+console.error: services.settings: 
+  main/public-suffix-list local data was corrupted
+console.warn: services.settings: main/public-suffix-list Signature verified failed. Retry from scratch
+console.error: services.settings: 
+  main/public-suffix-list Signature failed again InvalidSignatureError: Invalid content signature (main/public-suffix-list)
+console.error: services.settings: 
+  Message: InvalidSignatureError: Invalid content signature (main/public-suffix-list)
+  Stack:
+    InvalidSignatureError@resource://services-settings/RemoteSettingsClient.jsm:135:5
+_validateCollectionSignature@resource://services-settings/RemoteSettingsClient.jsm:875:13
+
+console.error: services.settings: 
+  main/doh-providers Signature failed  InvalidSignatureError: Invalid content signature (main/doh-providers)
+console.error: services.settings: 
+  main/doh-providers local data was corrupted
+console.warn: services.settings: main/doh-providers Signature verified failed. Retry from scratch
+console.error: services.settings: 
+  main/doh-config Signature failed  InvalidSignatureError: Invalid content signature (main/doh-config)
+console.error: services.settings: 
+  main/doh-config local data was corrupted
+console.warn: services.settings: main/doh-config Signature verified failed. Retry from scratch
+console.error: services.settings: 
+  main/search-config Signature failed  InvalidSignatureError: Invalid content signature (main/search-config)
+console.error: services.settings: 
+  main/search-config local data was corrupted
+console.warn: services.settings: main/search-config Signature verified failed. Retry from scratch
+1651431450766	Marionette	INFO	Stopped listening on port 61731
+JavaScript error: chrome://remote/content/marionette/cert.js, line 55: NS_ERROR_NOT_AVAILABLE: Component returned failure code: 0x80040111 (NS_ERROR_NOT_AVAILABLE) [nsICertOverrideService.setDisableAllSecurityChecksAndLetAttackersInterceptMyData]
+
+###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
+
+\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileqLgVgt\\search.json.mozlz4", (void 0)))
+1651431274778	Marionette	INFO	Listening on port 51393
+Read port: 51393
+1651431274895	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+1651431447479	Marionette	INFO	Stopped listening on port 51393
+JavaScript error: chrome://remote/content/marionette/cert.js, line 55: NS_ERROR_NOT_AVAILABLE: Component returned failure code: 0x80040111 (NS_ERROR_NOT_AVAILABLE) [nsICertOverrideService.setDisableAllSecurityChecksAndLetAttackersInterceptMyData]
+1651431959062	geckodriver	INFO	Listening on 127.0.0.1:62897
+1651431962143	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilemxJTDo"
+1651431962384	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilemxJTDo\\search.json.mozlz4", (void 0)))
+1651431963922	Marionette	INFO	Listening on port 62919
+Read port: 62919
+1651431964035	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+JavaScript error: resource://gre/modules/AsyncShutdown.jsm, line 575: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+JavaScript error: resource://gre/modules/AsyncShutdown.jsm, line 575: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+1651432131061	Marionette	INFO	Stopped listening on port 62919
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Msg_DestroyBrowsingContextGroup) Closed channel: cannot send/recv
+
+
+###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
+
+1651432553412	geckodriver	INFO	Listening on 127.0.0.1:52398
+1651432556484	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileAGwNLP"
+1651432556725	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileAGwNLP\\search.json.mozlz4", (void 0)))
+1651432558207	Marionette	INFO	Listening on port 52422
+Read port: 52422
+1651432558262	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+1651432639436	Marionette	INFO	Stopped listening on port 52422
+
+###!!! [Child][PContentChild] Error: RunMessage(msgname=PContent::Msg_DestroyBrowsingContextGroup) Channel closing: too late to send/recv, messages will be lost
+
+1651432720659	geckodriver	INFO	Listening on 127.0.0.1:52877
+1651432723721	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilei6vlVi"
+1651432723963	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilei6vlVi\\search.json.mozlz4", (void 0)))
+1651432725478	Marionette	INFO	Listening on port 52899
+Read port: 52899
+1651432725507	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+1651432781649	Marionette	INFO	Stopped listening on port 52899
+
+###!!! [Child][PContentChild] Error: RunMessage(msgname=PContent::Msg_DestroyBrowsingContextGroup) Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][PContentChild] Error: RunMessage(msgname=PContent::Msg_DestroyBrowsingContextGroup) Channel closing: too late to send/recv, messages will be lost
+

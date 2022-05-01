@@ -39,14 +39,14 @@ class WebParserUI(QWidget):
 
         self.appLayout = QHBoxLayout()
 
-        self.console = Console(size=(700, None), parent=self)
+        self.console = Console(size=(800, None), parent=self)
 
         self.tabs = QTabWidget(parent=self)
         self.tabs.setDocumentMode(True)
 
-        self.settingsTab = SettingsTab(size=(700, None), parent=self)
+        self.settingsTab = SettingsTab(size=(600, None), parent=self)
         self.tabs.addTab(self.settingsTab, "Settings")
-        self.parserTab = ParserTab(size=(700, None), parent=self)
+        self.parserTab = ParserTab(size=(600, None), parent=self)
         self.tabs.addTab(self.parserTab, "Parsers")
         # self.countTab = CountTab(size=(700, None), parent=self)
         # self.tabs.addTab(self.countTab, "Καταμέτρηση")

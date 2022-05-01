@@ -2,7 +2,6 @@
 import sys
 from pathlib import Path
 from typing import Any, Optional, Tuple
-from pprint import pprint
 from at.auth.client import AuthStatus, licensed
 from at.gui.components import *
 from at.gui.utils import VERTICAL, set_size
@@ -36,6 +35,10 @@ class ParserTab(QWidget):
         self.parseFromCombo.subscribe(self.onParseFromChange)
         self.buttonLaunch.subscribe(self.onLaunch)
         self.buttonFind.subscribe(self.onFindElement)
+        self.buttonSetActive.subscribe(self.onSetActive)
+        self.buttonStore.subscribe(self.onStore)
+        self.buttonSetActiveFromHistory.subscribe(self.onSetActiveFromHistory)
+        self.buttonGetAttribute.subscribe(self.onGetElementAttribute)
 
     def setupUi(self, size):
         set_size(widget=self, size=size)
@@ -51,6 +54,7 @@ class ParserTab(QWidget):
         parseFromLayout = QHBoxLayout()
         actionElemLayout = QVBoxLayout()
         interactionLayout = QVBoxLayout()
+        attrsLayout = QHBoxLayout()
 
         self.url = StrInput(label='URL',
                             parent=self)
@@ -74,9 +78,9 @@ class ParserTab(QWidget):
                                   combosize=(500, 24),
                                   parent=self)
 
-        self.setActiveFromHistory = Button(label='Set active',
-                                           size=(100, 24),
-                                           parent=self)
+        self.buttonSetActiveFromHistory = Button(label='Set active',
+                                                 size=(100, 24),
+                                                 parent=self)
 
         self.targetCombo = ComboInput(label='Target',
                                       items=('single', 'multiple'),
@@ -88,6 +92,14 @@ class ParserTab(QWidget):
                                      parent=self)
 
         self.elementParams = StrInput(parent=self)
+
+        self.attrsCombo = ComboInput(label='Attrs',
+                                     combosize=(200, 24),
+                                     parent=self)
+
+        self.buttonGetAttribute = Button(label='Get attribute',
+                                 size=(180, 24),
+                                 parent=self)
 
         self.buttonFind = Button(label='Find Element',
                                  color='blue',
@@ -110,6 +122,8 @@ class ParserTab(QWidget):
         self.status = StatusButton(parent=self)
 
         self.parseFromStatus.setText('Driver')
+        self.url.setText(
+            "https://www.skroutz.gr/c/40/kinhta-thlefwna.html?from=families")
 
         urlLayout.addWidget(self.url)
         urlLayout.addWidget(self.buttonLaunch)
@@ -121,13 +135,17 @@ class ParserTab(QWidget):
         engineChecksLayout.addLayout(parseFromLayout)
         layout.addLayout(engineChecksLayout)
         historyLayout.addWidget(self.history)
-        historyLayout.addWidget(self.setActiveFromHistory)
+        historyLayout.addWidget(self.buttonSetActiveFromHistory)
         layout.addLayout(historyLayout)
         layout.addWidget(HLine())
         layout.addWidget(self.targetCombo)
         paramsLayout.addWidget(self.findParams)
         paramsLayout.addWidget(self.elementParams, stretch=2)
         layout.addLayout(paramsLayout)
+        layout.addWidget(HLine())
+        attrsLayout.addWidget(self.attrsCombo)
+        attrsLayout.addWidget(self.buttonGetAttribute)
+        layout.addLayout(attrsLayout)
         layout.addWidget(HLine())
         interactionLayout.addWidget(self.buttonClick)
         interactionLayout.addWidget(self.buttonScroll)
@@ -185,6 +203,7 @@ class ParserTab(QWidget):
             self.history.clearItems()
         else:
             self.parseFromStatus.setText('History')
+            self.history.clearItems()
             self.history.addItems(state['history'].keys())
 
     def findElement(self, _progress):
@@ -205,6 +224,24 @@ class ParserTab(QWidget):
                          element=element,
                          target=target)
 
+    def getElementAttribute(self, _progress):
+        _attr = self.attrsCombo.getCurrentText()
+
+        texts = self.engine.get_attribute(_attr)
+
+        if isinstance(texts, list):
+            for idx, _text in enumerate(texts):
+                log.info(f"{idx} - {_text}")
+        else:
+            log.info(texts)
+
+    def onGetElementAttribute(self):
+        run_thread(threadpool=self.threadpool,
+                   function=self.getElementAttribute,
+                   on_update=self.updateProgress,
+                   on_result=self.updateResult,
+                   on_finish=self.updateFinish)
+
     def onFindElement(self):
         run_thread(threadpool=self.threadpool,
                    function=self.findElement,
@@ -223,11 +260,24 @@ class ParserTab(QWidget):
 
         self.engine.launch(_webdriver, _webdriver_exe, _url)
 
+    def onSetActive(self):
+        self.engine.set_active()
+        self.attrsCombo.clearItems()
+        self.attrsCombo.addItems(self.engine.active_element_attrs)
+
+    def onStore(self):
+        self.engine.store_element()
+
+    def onSetActiveFromHistory(self):
+        history_element_name = self.history.getCurrentText()
+
+        self.engine.set_active_from_history(history_element_name)
+
 
 if __name__ == '__main__':
     cssGuide = paths.get_css(obj=True).joinpath("_style.css").read_text()
     SEGOE = QFont("Segoe UI", 9)
-
+    
     app = QApplication(sys.argv)
     app.setFont(SEGOE)
     app.setStyle('Fusion')

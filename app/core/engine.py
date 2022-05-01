@@ -18,6 +18,7 @@ class SeleniumEngine:
     def __init__(self) -> None:
         self.driver = None
         self.active_element_name: str = ''
+        self.active_element_attrs: Optional[list] = None
         self.active_element: Optional[Union[WebElement,
                                             List[WebElement]]] = None
         self.found_element_name: str = ''
@@ -107,42 +108,74 @@ class SeleniumEngine:
 
         if _element is not None:
             if isinstance(_element, list):
-                name_tag = f"{len(_element)} | {by} | {element}"
-                log.success(f"\n[{len(_element)}] elements found | Name Tag: [{name_tag}]")
-                for idx, el in enumerate(_element):
-                    log.info(f"{idx} - {repr(el)}\n")
-                
+                if any(_element):
+                    _elems = [_el for _el in _element if _el is not None]
+                    name_tag = f"{len(_elems)} | {by} | {element}"
+                    log.success(
+                        f"\n[{len(_elems)}] elements found | Name Tag: [{name_tag}]")
+                    for idx, el in enumerate(_elems):
+                        log.highlight(f"\n{idx}")
+                        _attrs = self.get_element_attributes(el)
+                        for _attr in _attrs:
+                            log.info(f"{_attr}: {_attrs[_attr]}")
+                    self.found_element_name = name_tag
+                    self.found_element = _elems
+                else:
+                    log.warning(f"\nElement wasn't found with {by}: {element}")
             else:
                 name_tag = f"Single | {by} | {element}"
                 log.success(f"\nElement found | Name Tag: [{name_tag}]")
-                # log.info(self.get_element_attributes(_element))
                 _attrs = self.get_element_attributes(_element)
                 for _attr in _attrs:
                     log.info(f"{_attr}: {_attrs[_attr]}")
                 name_tag = f"Single | {by} | {element}"
-            self.found_element_name = name_tag
-            self.found_element = _element
+                self.found_element_name = name_tag
+                self.found_element = _element
         else:
             log.warning(f"\nElement wasn't found with {by}: {element}")
 
-    def set_active(self):
-        self.active_element = self.found_element
-        self.active_element_name = self.found_element_name
-        log.success("\nActive element changed.\n")
+    def set_active(self,
+                   element_name: Optional[str] = None,
+                   element: Optional[WebElement] = None):
+        if element_name is None:
+            self.active_element = self.found_element
+            self.active_element_name = self.found_element_name
+        else:
+            self.active_element = element
+            self.active_element_name = element_name
+        self.active_element_attrs = list(self.get_element_attributes().keys())
+        log.success(f"\nActive element changed to [{self.active_element_name}].\n")
 
     def set_active_from_history(self, element: str):
-        self.active_element = state['history'][element]
-        self.active_element_name = element
-        log.success("\nActive element changed from history.\n")
+        _el_name = element
+        _el = state['history'][_el_name]
+        self.set_active(_el_name, _el)
 
     def store_element(self):
         state['history'].update({self.found_element_name: self.found_element})
-        log.success("\nElement stored.\n")
+        log.success(f"\nElement [{self.found_element_name}] stored.\n")
 
-    def get_element_attributes(self, element:Optional[WebElement] = None):
+    def get_element_attributes(self, element: Optional[WebElement] = None):
         if element is None:
-            _attrs = get_element_attributes(self.driver, self.active_element)
+            if isinstance(self.active_element, list):
+                _attrs = get_element_attributes(self.driver, self.active_element[0])
+            else:
+                _attrs = get_element_attributes(self.driver, self.active_element)
         else:
-            _attrs = get_element_attributes(self.driver, element)
+            if isinstance(element, list):
+                _attrs = get_element_attributes(self.driver, element[0])
+            else:
+                _attrs = get_element_attributes(self.driver, element)
 
         return _attrs
+
+    def get_attribute(self, attribute:str):
+        if attribute == 'text':
+            _attribute = 'textContent'
+        else:
+            _attribute = attribute
+
+        if isinstance(self.active_element, list):
+            return [ae.get_attribute(_attribute) for ae in self.active_element]
+        else:
+            return self.active_element.get_attribute(_attribute)

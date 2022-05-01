@@ -27,7 +27,12 @@ def get_element_attributes(driver: SeleniumWebdriver, element: WebElement) -> di
     items[arguments[0].attributes[index].name] =
         arguments[0].attributes[index].value;
     }
-    items.text = arguments[0].textContent.trim()
+    var elemText = arguments[0].textContent.trim();
+
+    if (elemText != "") {
+    items.text = elemText;
+    }
+
     return items;
     """
 
