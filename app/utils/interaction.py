@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from time import sleep
+from selenium.webdriver.remote.webelement import WebElement
 from typing import TypeVar
 
 SeleniumWebdriver = TypeVar("SeleniumWebdriver")
@@ -17,3 +18,19 @@ def scroll_down(driver: SeleniumWebdriver, scrollby: int = 1500, wait: float = 0
         driver.execute_script(f"window.scrollTo(0, {go_y});")
         go_y += scrollby
         sleep(wait)
+
+
+def get_element_attributes(driver: SeleniumWebdriver, element: WebElement) -> dict:
+    script = """
+    var items = {};
+    for (index = 0; index < arguments[0].attributes.length; ++index) {
+    items[arguments[0].attributes[index].name] =
+        arguments[0].attributes[index].value;
+    }
+    items.text = arguments[0].textContent.trim()
+    return items;
+    """
+
+    _attrs = driver.execute_script(script, element)
+
+    return _attrs

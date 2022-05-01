@@ -1,33 +1,28 @@
-1651352291822	geckodriver	INFO	Listening on 127.0.0.1:52983
-1651352294909	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileClFZf5"
-1651352295212	Marionette	INFO	Marionette enabled
-console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileClFZf5\\search.json.mozlz4", (void 0)))
-1651352296724	Marionette	INFO	Listening on port 53005
-Read port: 53005
-1651352296836	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1651397854701	geckodriver	INFO	Listening on 127.0.0.1:49842
+1651397857765	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileXXAkwq"
+1651397858042	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileXXAkwq\\search.json.mozlz4", (void 0)))
+1651397859631	Marionette	INFO	Listening on port 49865
+Read port: 49865
+1651397859751	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
 console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
 JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
-JavaScript error: , line 0: NotFoundError: No such JSWindowActor 'DevToolsFrame'
-JavaScript error: , line 0: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+1651397889225	Marionette	INFO	Stopped listening on port 49865
+1651397925925	geckodriver	INFO	Listening on 127.0.0.1:50125
+1651397929008	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileRQ9nbn"
+1651397929284	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileRQ9nbn\\search.json.mozlz4", (void 0)))
+1651397930825	Marionette	INFO	Listening on port 50147
+Read port: 50147
+1651397930898	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
 console.error: services.settings: 
-  main/public-suffix-list Signature failed  InvalidSignatureError: Invalid content signature (main/public-suffix-list)
+  main/doh-providers Signature failed  InvalidSignatureError: Invalid content signature (main/doh-providers)
 console.error: services.settings: 
-  main/public-suffix-list local data was corrupted
-console.warn: services.settings: main/public-suffix-list Signature verified failed. Retry from scratch
+  main/doh-providers local data was corrupted
+console.warn: services.settings: main/doh-providers Signature verified failed. Retry from scratch
 console.error: services.settings: 
-  main/public-suffix-list Signature failed again InvalidSignatureError: Invalid content signature (main/public-suffix-list)
-console.error: services.settings: 
-  Message: InvalidSignatureError: Invalid content signature (main/public-suffix-list)
-  Stack:
-    InvalidSignatureError@resource://services-settings/RemoteSettingsClient.jsm:135:5
-_validateCollectionSignature@resource://services-settings/RemoteSettingsClient.jsm:875:13
-
-console.error: services.settings: 
-  main/doh-providers Signature failed  InvalidSignatureError: Invalid content signature (main/doh-providers)1651352745614	Marionette	INFO	Stopped listening on port 51762
-
-###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
-
-.settings: 
   main/doh-config Signature failed  InvalidSignatureError: Invalid content signature (main/doh-config)
 console.error: services.settings: 
   main/doh-config local data was corrupted
@@ -37,41 +32,128 @@ console.error: services.settings:
 console.error: services.settings: 
   main/search-config local data was corrupted
 console.warn: services.settings: main/search-config Signature verified failed. Retry from scratch
-1651352744022	Marionette	INFO	Stopped listening on port 53005
+1651398391539	Marionette	INFO	Stopped listening on port 50147
 
 ###!!! [Child][PContentChild] Error: RunMessage(msgname=PContent::Msg_DestroyBrowsingContextGroup) Channel closing: too late to send/recv, messages will be lost
 
 
 ###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
 
-1651352767728	geckodriver	INFO	Listening on 127.0.0.1:59118
-1651352770802	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilej8nqCu"
-1651352771075	Marionette	INFO	Marionette enabled
-console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilej8nqCu\\search.json.mozlz4", (void 0)))
-1651352772573	Marionette	INFO	Listening on port 59139
-Read port: 59139
-1651352772688	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1651398558050	geckodriver	INFO	Listening on 127.0.0.1:62321
+1651398561105	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileBAiS8U"
+1651398561351	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileBAiS8U\\search.json.mozlz4", (void 0)))
+1651398562873	Marionette	INFO	Listening on port 62343
+Read port: 62343
+1651398562992	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
 console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
 JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
-1651353100443	Marionette	INFO	Stopped listening on port 59139
-1352908147	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileJPwlxw"
-1651352908412	Marionette	INFO	Marionette enabled
-console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileJPwlxw\\search.json.mozlz4", (void 0)))
-1651352909891	Marionette	INFO	Listening on port 52745
-Read port: 52745
-1651352909927	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
-console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
-JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
-1651353098995	Marionette	INFO	Stopped listening on port 52745
+1651398746381	Marionette	INFO	Stopped listening on port 62343
 
 ###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
 
-\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileoGSimq"
-1651353008716	Marionette	INFO	Marionette enabled
-console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileoGSimq\\search.json.mozlz4", (void 0)))
-1651353010217	Marionette	INFO	Listening on port 52841
-Read port: 52841
-1651353010249	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1651399092329	geckodriver	INFO	Listening on 127.0.0.1:57052
+1651399095452	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilep8UPR8"
+1651399095716	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilep8UPR8\\search.json.mozlz4", (void 0)))
+1651399097398	Marionette	INFO	Listening on port 57075
+Read port: 57075
+1651399097431	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
 console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
 JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
-1651353048068	Marionette	INFO	Stopped listening on port 52841
+JavaScript error: chrome://global/content/elements/browser-custom-element.js, line 1629: Error: permitUnload is already running for this tab.
+JavaScript error: chrome://global/content/elements/browser-custom-element.js, line 1629: Error: permitUnload is already running for this tab.
+JavaScript error: chrome://global/content/elements/browser-custom-element.js, line 1629: Error: permitUnload is already running for this tab.
+JavaScript error: chrome://global/content/elements/browser-custom-element.js, line 1629: Error: permitUnload is already running for this tab.
+JavaScript error: chrome://global/content/elements/browser-custom-element.js, line 1629: Error: permitUnload is already running for this tab.
+JavaScript error: chrome://global/content/elements/browser-custom-element.js, line 1629: Error: permitUnload is already running for this tab.
+JavaScript error: chrome://global/content/elements/browser-custom-element.js, line 1629: Error: permitUnload is already running for this tab.
+JavaScript error: chrome://global/content/elements/browser-custom-element.js, line 1629: Error: permitUnload is already running for this tab.
+JavaScript error: chrome://global/content/elements/browser-custom-element.js, line 1629: Error: permitUnload is already running for this tab.
+JavaScript error: chrome://global/content/elements/browser-custom-element.js, line 1629: Error: permitUnload is already running for this tab.
+JavaScript error: chrome://global/content/elements/browser-custom-element.js, line 1629: Error: permitUnload is already running for this tab.
+JavaScript error: resource://devtools/client/inspector/shared/highlighters-overlay.js, line 215: TypeError: this.inspector.toolbox is null
+JavaScript error: chrome://global/content/elements/browser-custom-element.js, line 1629: Error: permitUnload is already running for this tab.
+JavaScript error: resource://gre/modules/AsyncShutdown.jsm, line 575: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+JavaScript error: resource://gre/modules/AsyncShutdown.jsm, line 575: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+JavaScript error: resource://gre/modules/AsyncShutdown.jsm, line 575: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+JavaScript error: resource://gre/modules/AsyncShutdown.jsm, line 575: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+JavaScript error: resource://gre/modules/AsyncShutdown.jsm, line 575: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+JavaScript error: resource://gre/modules/AsyncShutdown.jsm, line 575: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+WARNING: At least one completion condition is taking too long to complete. Conditions: [{"name":"SessionStore: flushing all windows","state":{"total":1,"current":0},"filename":"resource:///modules/sessionstore/SessionStore.jsm","lineNumber":2107,"stack":["resource:///modules/sessionstore/SessionStore.jsm:ssi_onQuitApplicationGranted:2107","resource:///modules/sessionstore/SessionStore.jsm:ssi_observe:1023","chrome://global/content/elements/browser-custom-element.js:permitUnload:1686","chrome://browser/content/browser.js:CanCloseWindow:8020","chrome://browser/content/browser.js:WindowIsClosing:8049","chrome://browser/content/browser.js:BrowserTryToCloseWindow:3024","chrome://browser/content/browser.xhtml:oncommand:1"]}] Barrier: quit-application-granted
+
+###!!! [Parent][PContentParent] Error: RunMessage(msgname=PNecko::Msg_RemoveRequestContext) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: RunMessage(msgname=PNecko::Msg_RemoveRequestContext) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: RunMessage(msgname=PContent::Msg_AccumulateChildHistograms) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: RunMessage(msgname=PContent::Msg_RecordDiscardedData) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: RunMessage(msgname=PContent::Msg_AccumulateChildHistograms) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: RunMessage(msgname=PContent::Msg_RecordDiscardedData) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Msg_AsyncMessage) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Msg_AsyncMessage) Channel error: cannot send/recv
+
+1651399384084	Marionette	INFO	Stopped listening on port 57075
+JavaScript error: chrome://browser/content/browser.js, line 8026: uncaught exception: undefined
+
+###!!! [Parent][PContentParent] Error: RunMessage(msgname=PContent::Reply_DiscardBrowsingContext) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Msg_DiscardWindowContext) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Msg_SuspendInputEventQueue) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Msg_FlushInputEventQueue) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Msg_ResumeInputEventQueue) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Msg_ShutdownConfirmedHP) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Msg_Shutdown) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Msg_SuspendInputEventQueue) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Msg_FlushInputEventQueue) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Msg_ResumeInputEventQueue) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Msg_ShutdownConfirmedHP) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Msg_Shutdown) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: RunMessage(msgname=PHttpChannel::Msg___delete__) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Msg_DestroyBrowsingContextGroup) Channel error: cannot send/recv
+
+
+###!!! [Parent][PContentParent] Error: Send(msgname=PContent::Reply_DiscardBrowsingContext) Channel error: cannot send/recv
+
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+
+###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
+

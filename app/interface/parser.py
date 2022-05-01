@@ -2,7 +2,7 @@
 import sys
 from pathlib import Path
 from typing import Any, Optional, Tuple
-
+from pprint import pprint
 from at.auth.client import AuthStatus, licensed
 from at.gui.components import *
 from at.gui.utils import VERTICAL, set_size
@@ -222,6 +222,7 @@ class ParserTab(QWidget):
             _webdriver_exe = paths.get_chromedriver()
 
         self.engine.launch(_webdriver, _webdriver_exe, _url)
+
 
 if __name__ == '__main__':
     cssGuide = paths.get_css(obj=True).joinpath("_style.css").read_text()
