@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 from typing import Any, Optional, Tuple
+
 from at.auth.client import AuthStatus
 from at.gui.components import *
 from at.gui.utils import set_size
@@ -10,7 +11,7 @@ from at.result import Result
 from atparser.app.settings import *
 from atparser.app.utils import paths, state
 from at.web import Element
-from atparser.app.core import SeleniumEngine
+from atparser.app.core import SeleniumEngine, BeautifulSoupEngine
 from PyQt5.QtCore import Qt, QThreadPool, pyqtSignal
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
@@ -19,14 +20,15 @@ from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
 # -> add alignment=Qt.AlignLeft when adding widget to layout
 
 
-class SeleniumParserTab(QWidget):
+class ParserTab(QWidget):
     def __init__(self,
                  size: Tuple[Optional[int]] = (None, None),
                  parent: Optional[QWidget] = None,
                  *args,
                  **kwargs) -> None:
         super().__init__(parent=parent, *args, **kwargs)
-        self.engine = SeleniumEngine()
+        self.seleniumEngine = SeleniumEngine()
+        self.bsEngine = BeautifulSoupEngine()
         self.setupUi(size)
         self.threadpool = QThreadPool(parent=self)
         self.popup = Popup(state['appname'])
@@ -52,12 +54,12 @@ class SeleniumParserTab(QWidget):
         urlLayout = QVBoxLayout()
         topButtonLayout = QHBoxLayout()
         engineChecksLayout = QVBoxLayout()
-        paramsLayout = QHBoxLayout()
+        seleniumParamsLayout = QHBoxLayout()
+        bs4ParamsLayout = QVBoxLayout()
         buttonLayout = QHBoxLayout()
         historyLayout = QHBoxLayout()
         parseFromLayout = QHBoxLayout()
         actionElemLayout = QVBoxLayout()
-        interactionLayout = QVBoxLayout()
         attrsLayout = QHBoxLayout()
 
         self.url = StrInput(label='URL',
@@ -81,10 +83,12 @@ class SeleniumParserTab(QWidget):
 
         self.parseFromCombo = ComboInput(label='Parse from',
                                          items=('Driver',
+                                                'Soup',
                                                 'Active element',
                                                 'History'),
+                                         combosize=(120, 24),
                                          parent=self)
-        self.parseFromStatus = StatusLabel(statussize=(340, 22),
+        self.parseFromStatus = StatusLabel(statussize=(400, 22),
                                            parent=self)
 
         self.history = ComboInput(label='History',
@@ -99,12 +103,27 @@ class SeleniumParserTab(QWidget):
                                       items=('single', 'multiple'),
                                       parent=self)
 
+        self.engineSelect = ComboInput(label='Engine',
+                                       items=('Selenium', 'BS4'),
+                                       parent=self)
+
         self.findParams = ComboInput(label='Params',
                                      items=FIND_PARAMS,
                                      combosize=(120, 24),
                                      parent=self)
 
         self.elementParams = StrInput(parent=self)
+
+        self.tagElem = ComboInput(label='Tag',
+                                  items=MOST_COMMON_HTML_TAGS,
+                                  combosize=(120, 24),
+                                  parent=self)
+
+        self.classParam = StrInput(label='Class',
+                                   parent=self)
+
+        self.idParam = StrInput(label='Id',
+                                parent=self)
 
         self.attrsCombo = ComboInput(label='Attrs',
                                      combosize=(200, 24),
@@ -131,7 +150,7 @@ class SeleniumParserTab(QWidget):
 
         self.status = StatusButton(parent=self)
 
-        self.parseFromStatus.setText('Driver')
+        self.parseFromStatus.setText('Selenium WebDriver')
         self.url.setText(
             "https://www.skroutz.gr/c/40/kinhta-thlefwna.html?from=families")
 
@@ -150,11 +169,17 @@ class SeleniumParserTab(QWidget):
         historyLayout.addWidget(self.history)
         historyLayout.addWidget(self.buttonSetActiveFromHistory)
         layout.addLayout(historyLayout)
-        layout.addWidget(HLine())
         layout.addWidget(self.targetCombo)
-        paramsLayout.addWidget(self.findParams)
-        paramsLayout.addWidget(self.elementParams, stretch=2)
-        layout.addLayout(paramsLayout)
+        layout.addWidget(self.engineSelect)
+        layout.addWidget(HLine())
+        seleniumParamsLayout.addWidget(self.findParams)
+        seleniumParamsLayout.addWidget(self.elementParams, stretch=2)
+        layout.addLayout(seleniumParamsLayout)
+        layout.addWidget(HLine())
+        bs4ParamsLayout.addWidget(self.tagElem)
+        bs4ParamsLayout.addWidget(self.classParam)
+        bs4ParamsLayout.addWidget(self.idParam)
+        layout.addLayout(bs4ParamsLayout)
         layout.addWidget(HLine())
         attrsLayout.addWidget(self.attrsCombo)
         attrsLayout.addWidget(self.buttonGetAttribute, alignment=Qt.AlignRight)
@@ -203,18 +228,38 @@ class SeleniumParserTab(QWidget):
     def updateFinish(self):
         pass
 
+    def selectEngine(self):
+        _engine = self.engineSelect.getCurrentText()
+
+        if _engine == "Selenium":
+            return self.seleniumEngine
+        else:
+            return self.bsEngine
+
     def onGetCookies(self):
-        cookies = self.engine.get_cookies()
-        log.info(cookies)
+        if self.seleniumEngine.driver is not None:
+            cookies = self.seleniumEngine.get_cookies()
+            log.info(cookies)
+        else:
+            log.error("Driver is not launched. Can't get cookies")
 
     def onScrollDown(self):
-        self.engine.scroll_down()
+        if self.seleniumEngine.driver is not None:
+            self.seleniumEngine.scroll_down()
+        else:
+            log.error("Driver is not launched. Can't scroll down")
 
     def onRefresh(self):
-        self.engine.refresh()
+        if self.seleniumEngine.driver is not None:
+            self.seleniumEngine.refresh()
+        else:
+            log.error("Driver is not launched. Can't refresh page")
 
     def click(self, _progress):
-        self.engine.click()
+        if self.seleniumEngine.driver is not None and self.seleniumEngine.active_element is not None:
+            self.seleniumEngine.click()
+        else:
+            log.error("No active element to click.")
 
     def onClick(self):
         run_thread(threadpool=self.threadpool,
@@ -232,16 +277,22 @@ class SeleniumParserTab(QWidget):
         else:
             _webdriver_exe = paths.get_chromedriver()
 
-        self.engine.launch(_webdriver, _webdriver_exe, _url)
+        self.seleniumEngine.launch(_webdriver, _webdriver_exe, _url)
 
     def onParseFromChange(self):
         combo_text = self.parseFromCombo.getCurrentText()
 
         if combo_text == 'Driver':
-            self.parseFromStatus.setText('Driver')
+            self.parseFromStatus.setText('Selenium WebDriver')
             self.history.clearItems()
+            self.engineSelect.setCurrentText("Selenium")
+        if combo_text == 'Soup':
+            self.parseFromStatus.setText('BeautifulSoup')
+            self.history.clearItems()
+            self.engineSelect.setCurrentText("BS4")
         elif combo_text == 'Active element':
-            self.parseFromStatus.setText(self.engine.active_element_name)
+            _engine = self.selectEngine()
+            self.parseFromStatus.setText(_engine.active_element_name)
             self.history.clearItems()
         else:
             self.parseFromStatus.setText('History')
@@ -257,15 +308,44 @@ class SeleniumParserTab(QWidget):
         else:
             origin = parse_from
 
-        by = self.findParams.getCurrentText()
-        element = self.elementParams.getText()
-        target = self.targetCombo.getCurrentText()
+        _engine = self.engineSelect.getCurrentText()
 
-        element = Element.from_text(f"{by}={element}")
+        if _engine == 'Selenium':
+            by = self.findParams.getCurrentText()
+            element = self.elementParams.getText()
+            target = self.targetCombo.getCurrentText()
 
-        self.engine.find(origin=origin,
-                         element=element,
-                         target=target)
+            element = Element.from_text(f"{by}={element}")
+
+            self.seleniumEngine.find(origin=origin,
+                                     element=element,
+                                     target=target)
+        else:
+            tagParam = self.tagElem.getCurrentText()
+            classParam = self.classParam.getText()
+            idParam = self.idParam.getText()
+
+            target = self.targetCombo.getCurrentText()
+
+            if classParam == '':
+                _class = None
+            else:
+                _class = classParam
+
+            if idParam == '':
+                _id = None
+            else:
+                _id = idParam
+
+            element = Element(tag_name=tagParam,
+                              class_name=_class,
+                              id=_id)
+
+            self.bsEngine.refresh_soup_from_selenium_engine(self.seleniumEngine)
+
+            self.bsEngine.find(origin=origin,
+                               element=element,
+                               target=target)
 
     def onFindElement(self):
         run_thread(threadpool=self.threadpool,
@@ -277,7 +357,9 @@ class SeleniumParserTab(QWidget):
     def getElementAttribute(self, _progress):
         _attr = self.attrsCombo.getCurrentText()
 
-        texts = self.engine.get_attribute(_attr)
+        _engine = self.selectEngine()
+
+        texts = _engine.get_attribute(_attr)
 
         if isinstance(texts, list):
             for idx, _text in enumerate(texts):
@@ -293,9 +375,10 @@ class SeleniumParserTab(QWidget):
                    on_finish=self.updateFinish)
 
     def setActiveElement(self, _progress):
-        self.engine.set_active()
+        _engine = self.selectEngine()
+        _engine.set_active()
         self.attrsCombo.clearItems()
-        self.attrsCombo.addItems(self.engine.active_element_attrs)
+        self.attrsCombo.addItems(_engine.active_element_attrs)
 
         self.onParseFromChange()
 
@@ -307,7 +390,8 @@ class SeleniumParserTab(QWidget):
                    on_finish=self.updateFinish)
 
     def storeElement(self, _progress):
-        self.engine.store_element()
+        _engine = self.selectEngine()
+        _engine.store_element()
 
     def onStoreElement(self):
         run_thread(threadpool=self.threadpool,
@@ -319,7 +403,12 @@ class SeleniumParserTab(QWidget):
     def setActiveFromHistory(self, _progress):
         history_element_name = self.history.getCurrentText()
 
-        self.engine.set_active_from_history(history_element_name)
+        if history_element_name:
+            _engine = self.selectEngine()
+
+            _engine.set_active_from_history(history_element_name)
+        else:
+            log.warning("No element was chosen from history")
 
     def onSetActiveFromHistory(self):
         run_thread(threadpool=self.threadpool,
@@ -337,7 +426,7 @@ if __name__ == '__main__':
     app.setFont(SEGOE)
     app.setStyle('Fusion')
 
-    ui = SeleniumParserTab(size=(600, None))
+    ui = ParserTab(size=(600, None))
     ui.setStyleSheet(cssGuide)
     ui.show()
 

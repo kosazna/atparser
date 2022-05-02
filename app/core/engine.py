@@ -11,7 +11,10 @@ from at.web import (scroll_down,
                     get_user_agent,
                     request_soup,
                     get_dom_element_attributes,
-                    Element)
+                    Element,
+                    parse_soup,
+                    multi_parse_soup)
+from bs4.element import Tag
 from atparser.app.utils import state
 from at.logger import log
 
@@ -146,8 +149,11 @@ class SeleniumEngine:
         self.set_active(_el_name, _el)
 
     def store_element(self):
-        state['history'].update({self.found_element_name: self.found_element})
-        log.success(f"\nElement [{self.found_element_name}] stored.\n")
+        if self.found_element_name:
+            state['history'].update({self.found_element_name: self.found_element})
+            log.success(f"\nElement [{self.found_element_name}] stored.\n")
+        else:
+            log.warning("No element to be stored")
 
     def get_element_attributes(self, element: Optional[WebElement] = None):
         if element is None:
@@ -192,35 +198,29 @@ class BeautifulSoupEngine:
     @classmethod
     def from_request(cls, url: str):
         bse = BeautifulSoupEngine()
-        bse.soup = request_soup(url=url, browser=state['webdriver'])
+        bse.soup = request_soup(url=url)
 
         return bse
 
     @classmethod
-    def from_selenium_engine(engine: SeleniumEngine):
+    def from_selenium_engine(cls, engine: SeleniumEngine):
         bse = BeautifulSoupEngine()
-        bse.soup = BeautifulSoup(engine.driver.page_source)
+        bse.soup = BeautifulSoup(engine.driver.page_source, 'lxml')
         bse.selenium_engine = engine
 
         return bse
 
-    def refresh_soup_from_selenium_engine(self):
-        self.soup = BeautifulSoup(self.selenium_engine.driver.page_source)
+    def refresh_soup_from_selenium_engine(self, engine:SeleniumEngine):
+        self.selenium_engine = engine
+        self.soup = BeautifulSoup(engine.driver.page_source, 'lxml')
 
     def _find_element(self, container, element: Element, mode: str = 'single'):
-        try:
-            if mode == 'multiple':
-                _element = container.find_elements(**element.selenium_props())
-            else:
-                _element = container.find_element(**element.selenium_props())
+        if mode == 'multiple':
+            _element = multi_parse_soup(container, element)
+        else:
+            _element = parse_soup(container, element)
 
-            return _element
-        except NoSuchElementException:
-            log.error(f"NoSuchElementException -> {element}")
-            return None
-        except StaleElementReferenceException:
-            log.error(f"StaleElementReferenceException -> {element}")
-            return None
+        return _element
 
     def find(self,
              origin: Union[str, WebElement],
@@ -228,8 +228,8 @@ class BeautifulSoupEngine:
              target: str = 'single'):
 
         if isinstance(origin, str):
-            if origin == 'Driver':
-                container = self.driver
+            if origin == 'Soup':
+                container = self.soup
             else:
                 container = self.active_element
         else:
@@ -245,7 +245,7 @@ class BeautifulSoupEngine:
             if isinstance(_element, list):
                 if any(_element):
                     _elems = [_el for _el in _element if _el is not None]
-                    name_tag = f"{len(_elems)} | Selenium | {element}"
+                    name_tag = f"{len(_elems)} | BS4 | {element}"
                     log.success(
                         f"\n[{len(_elems)}] elements found | Name Tag: [{name_tag}]")
                     for idx, el in enumerate(_elems):
@@ -258,7 +258,7 @@ class BeautifulSoupEngine:
                 else:
                     log.warning(f"{element} wasn't found")
             else:
-                name_tag = f"Single | Selenium | {element}"
+                name_tag = f"Single | BS4 | {element}"
                 log.success(f"\nElement found | Name Tag: [{name_tag}]")
                 _attrs = self.get_element_attributes(_element)
                 for _attr in _attrs:
@@ -287,32 +287,34 @@ class BeautifulSoupEngine:
         self.set_active(_el_name, _el)
 
     def store_element(self):
-        state['history'].update({self.found_element_name: self.found_element})
-        log.success(f"\nElement [{self.found_element_name}] stored.\n")
+        if self.found_element_name:
+            state['history'].update({self.found_element_name: self.found_element})
+            log.success(f"\nElement [{self.found_element_name}] stored.\n")
+        else:
+            log.warning("No element to be stored")
 
-    def get_element_attributes(self, element: Optional[WebElement] = None):
+    def get_element_attributes(self, element: Optional[Tag] = None):
         if element is None:
             if isinstance(self.active_element, list):
-                _attrs = get_dom_element_attributes(
-                    self.driver, self.active_element[0])
+                _attrs = self.active_element[0].attrs
             else:
-                _attrs = get_dom_element_attributes(
-                    self.driver, self.active_element)
+                _attrs = self.active_element.attrs
         else:
             if isinstance(element, list):
-                _attrs = get_dom_element_attributes(self.driver, element[0])
+                _attrs = element[0].attrs
             else:
-                _attrs = get_dom_element_attributes(self.driver, element)
+                _attrs = element.attrs
 
         return _attrs
 
     def get_attribute(self, attribute: str):
         if attribute == 'text':
-            _attribute = 'textContent'
+            if isinstance(self.active_element, list):
+                return [ae.text for ae in self.active_element]
+            else:
+                return self.active_element.text
         else:
-            _attribute = attribute
-
-        if isinstance(self.active_element, list):
-            return [ae.get_attribute(_attribute) for ae in self.active_element]
-        else:
-            return self.active_element.get_attribute(_attribute)
+            if isinstance(self.active_element, list):
+                return [ae.get(attribute) for ae in self.active_element]
+            else:
+                return self.active_element.get(attribute)
