@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 import sys
-from pathlib import Path
 from typing import Any, Optional, Tuple
-from at.auth.client import AuthStatus, licensed
+from at.auth.client import AuthStatus
 from at.gui.components import *
-from at.gui.utils import VERTICAL, set_size
+from at.gui.utils import set_size
 from at.gui.worker import run_thread
-from at.io.copyfuncs import copy_pattern_from_files
 from at.logger import log
 from at.result import Result
 from atparser.app.settings import *
-from atparser.app.utils import paths, state, Element
+from atparser.app.utils import paths, state
+from at.web import Element
 from atparser.app.core import SeleniumEngine
 from PyQt5.QtCore import Qt, QThreadPool, pyqtSignal
 from PyQt5.QtGui import QFont
@@ -39,6 +38,10 @@ class SeleniumParserTab(QWidget):
         self.buttonStore.subscribe(self.onStoreElement)
         self.buttonSetActiveFromHistory.subscribe(self.onSetActiveFromHistory)
         self.buttonGetAttribute.subscribe(self.onGetElementAttribute)
+        self.buttonClick.subscribe(self.onClick)
+        self.buttonGetCookies.subscribe(self.onGetCookies)
+        self.buttonRefresh.subscribe(self.onRefresh)
+        self.buttonScroll.subscribe(self.onScrollDown)
 
     def setupUi(self, size):
         set_size(widget=self, size=size)
@@ -46,7 +49,8 @@ class SeleniumParserTab(QWidget):
         layout = QVBoxLayout()
         layout.setContentsMargins(2, 4, 2, 0)
 
-        urlLayout = QHBoxLayout()
+        urlLayout = QVBoxLayout()
+        topButtonLayout = QHBoxLayout()
         engineChecksLayout = QVBoxLayout()
         paramsLayout = QHBoxLayout()
         buttonLayout = QHBoxLayout()
@@ -60,11 +64,20 @@ class SeleniumParserTab(QWidget):
                             parent=self)
 
         self.buttonLaunch = Button(label='Launch',
+                                   size=(100, 24),
                                    parent=self)
 
-        self.engineCombo = ComboInput(label='Engine',
-                                      items=('selenium', 'bs4'),
-                                      parent=self)
+        self.buttonRefresh = Button(label='Refresh',
+                                    size=(100, 24),
+                                    parent=self)
+
+        self.buttonGetCookies = Button(label='Get Cookies',
+                                       size=(100, 24),
+                                       parent=self)
+
+        self.buttonScroll = Button(label='Scroll down',
+                                   size=(100, 24),
+                                   parent=self)
 
         self.parseFromCombo = ComboInput(label='Parse from',
                                          items=('Driver',
@@ -98,7 +111,7 @@ class SeleniumParserTab(QWidget):
                                      parent=self)
 
         self.buttonGetAttribute = Button(label='Get attribute',
-                                         size=(180, 24),
+                                         size=(150, 24),
                                          parent=self)
 
         self.buttonFind = Button(label='Find Element',
@@ -115,9 +128,6 @@ class SeleniumParserTab(QWidget):
         self.buttonClick = Button(label='Click',
                                         size=(150, 24),
                                         parent=self)
-        self.buttonScroll = Button(label='Scroll down',
-                                   size=(150, 24),
-                                   parent=self)
 
         self.status = StatusButton(parent=self)
 
@@ -126,12 +136,15 @@ class SeleniumParserTab(QWidget):
             "https://www.skroutz.gr/c/40/kinhta-thlefwna.html?from=families")
 
         urlLayout.addWidget(self.url)
-        urlLayout.addWidget(self.buttonLaunch)
+        topButtonLayout.addWidget(self.buttonLaunch, alignment=Qt.AlignRight)
+        topButtonLayout.addWidget(self.buttonRefresh)
+        topButtonLayout.addWidget(self.buttonScroll)
+        topButtonLayout.addWidget(self.buttonGetCookies)
+        urlLayout.addLayout(topButtonLayout)
         layout.addLayout(urlLayout)
         layout.addWidget(HLine())
         parseFromLayout.addWidget(self.parseFromCombo)
         parseFromLayout.addWidget(self.parseFromStatus, stretch=2)
-        engineChecksLayout.addWidget(self.engineCombo)
         engineChecksLayout.addLayout(parseFromLayout)
         layout.addLayout(engineChecksLayout)
         historyLayout.addWidget(self.history)
@@ -144,16 +157,14 @@ class SeleniumParserTab(QWidget):
         layout.addLayout(paramsLayout)
         layout.addWidget(HLine())
         attrsLayout.addWidget(self.attrsCombo)
-        attrsLayout.addWidget(self.buttonGetAttribute)
+        attrsLayout.addWidget(self.buttonGetAttribute, alignment=Qt.AlignRight)
+        attrsLayout.addWidget(self.buttonClick)
         layout.addLayout(attrsLayout)
         layout.addWidget(HLine())
-        interactionLayout.addWidget(self.buttonClick)
-        interactionLayout.addWidget(self.buttonScroll)
         actionElemLayout.addWidget(self.buttonSetActive)
         actionElemLayout.addWidget(self.buttonStore)
         buttonLayout.addWidget(self.buttonFind, alignment=Qt.AlignCenter)
         buttonLayout.addLayout(actionElemLayout)
-        buttonLayout.addLayout(interactionLayout)
         layout.addLayout(buttonLayout)
         layout.addWidget(self.status, stretch=2, alignment=Qt.AlignBottom)
         self.setLayout(layout)
@@ -191,6 +202,26 @@ class SeleniumParserTab(QWidget):
 
     def updateFinish(self):
         pass
+
+    def onGetCookies(self):
+        cookies = self.engine.get_cookies()
+        log.info(cookies)
+
+    def onScrollDown(self):
+        self.engine.scroll_down()
+
+    def onRefresh(self):
+        self.engine.refresh()
+
+    def click(self, _progress):
+        self.engine.click()
+
+    def onClick(self):
+        run_thread(threadpool=self.threadpool,
+                   function=self.click,
+                   on_update=self.updateProgress,
+                   on_result=self.updateResult,
+                   on_finish=self.updateFinish)
 
     def onLaunch(self):
         _webdriver = state['webdriver']

@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 import sys
-from pathlib import Path
 from typing import Any, Optional, Tuple
-from at.auth.client import AuthStatus, licensed
+from at.auth.client import AuthStatus
 from at.gui.components import *
-from at.gui.utils import VERTICAL, set_size
+from at.gui.utils import set_size
 from at.gui.worker import run_thread
-from at.io.copyfuncs import copy_pattern_from_files
 from at.logger import log
 from at.result import Result
 from atparser.app.settings import *
-from atparser.app.utils import paths, state, Element
+from atparser.app.utils import paths, state
+from at.web import Element
 from atparser.app.core import SeleniumEngine
 from PyQt5.QtCore import Qt, QThreadPool, pyqtSignal
 from PyQt5.QtGui import QFont

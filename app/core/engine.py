@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from typing import Optional, List, Union, Dict
 from selenium.common.exceptions import (NoSuchElementException,
                                         StaleElementReferenceException)
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from atparser.app.utils import (scroll_down,
-                                get_user_agent,
-                                state,
-                                get_element_attributes,
-                                Element)
-from time import sleep
+from at.web import (scroll_down,
+                    get_user_agent,
+                    request_soup,
+                    get_dom_element_attributes,
+                    Element)
+from atparser.app.utils import state
 from at.logger import log
 
 
@@ -38,7 +38,7 @@ class SeleniumEngine:
 
     def refresh(self):
         self.driver.refresh()
-    
+
     def get_cookies(self):
         return self.driver.get_cookies()
 
@@ -152,16 +152,16 @@ class SeleniumEngine:
     def get_element_attributes(self, element: Optional[WebElement] = None):
         if element is None:
             if isinstance(self.active_element, list):
-                _attrs = get_element_attributes(
+                _attrs = get_dom_element_attributes(
                     self.driver, self.active_element[0])
             else:
-                _attrs = get_element_attributes(
+                _attrs = get_dom_element_attributes(
                     self.driver, self.active_element)
         else:
             if isinstance(element, list):
-                _attrs = get_element_attributes(self.driver, element[0])
+                _attrs = get_dom_element_attributes(self.driver, element[0])
             else:
-                _attrs = get_element_attributes(self.driver, element)
+                _attrs = get_dom_element_attributes(self.driver, element)
 
         return _attrs
 
@@ -180,6 +180,7 @@ class SeleniumEngine:
 class BeautifulSoupEngine:
     def __init__(self) -> None:
         self.soup = None
+        self.selenium_engine: Optional[SeleniumEngine] = None
         self.active_element_name: str = ''
         self.active_element_attrs: Optional[list] = None
         self.active_element: Optional[Union[WebElement,
@@ -187,6 +188,24 @@ class BeautifulSoupEngine:
         self.found_element_name: str = ''
         self.found_element: Optional[Union[WebElement,
                                            List[WebElement]]] = None
+
+    @classmethod
+    def from_request(cls, url: str):
+        bse = BeautifulSoupEngine()
+        bse.soup = request_soup(url=url, browser=state['webdriver'])
+
+        return bse
+
+    @classmethod
+    def from_selenium_engine(engine: SeleniumEngine):
+        bse = BeautifulSoupEngine()
+        bse.soup = BeautifulSoup(engine.driver.page_source)
+        bse.selenium_engine = engine
+
+        return bse
+
+    def refresh_soup_from_selenium_engine(self):
+        self.soup = BeautifulSoup(self.selenium_engine.driver.page_source)
 
     def _find_element(self, container, element: Element, mode: str = 'single'):
         try:
@@ -274,16 +293,16 @@ class BeautifulSoupEngine:
     def get_element_attributes(self, element: Optional[WebElement] = None):
         if element is None:
             if isinstance(self.active_element, list):
-                _attrs = get_element_attributes(
+                _attrs = get_dom_element_attributes(
                     self.driver, self.active_element[0])
             else:
-                _attrs = get_element_attributes(
+                _attrs = get_dom_element_attributes(
                     self.driver, self.active_element)
         else:
             if isinstance(element, list):
-                _attrs = get_element_attributes(self.driver, element[0])
+                _attrs = get_dom_element_attributes(self.driver, element[0])
             else:
-                _attrs = get_element_attributes(self.driver, element)
+                _attrs = get_dom_element_attributes(self.driver, element)
 
         return _attrs
 
