@@ -23,4 +23,6 @@ FIND_PARAMS = ('class',
                'id',
                'xpath',
                'css',
-               'tag')
+               'tag',
+               'partial',
+               'link text')

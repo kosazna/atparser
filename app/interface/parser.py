@@ -35,8 +35,8 @@ class ParserTab(QWidget):
         self.parseFromCombo.subscribe(self.onParseFromChange)
         self.buttonLaunch.subscribe(self.onLaunch)
         self.buttonFind.subscribe(self.onFindElement)
-        self.buttonSetActive.subscribe(self.onSetActive)
-        self.buttonStore.subscribe(self.onStore)
+        self.buttonSetActive.subscribe(self.onSetActiveElement)
+        self.buttonStore.subscribe(self.onStoreElement)
         self.buttonSetActiveFromHistory.subscribe(self.onSetActiveFromHistory)
         self.buttonGetAttribute.subscribe(self.onGetElementAttribute)
 
@@ -98,8 +98,8 @@ class ParserTab(QWidget):
                                      parent=self)
 
         self.buttonGetAttribute = Button(label='Get attribute',
-                                 size=(180, 24),
-                                 parent=self)
+                                         size=(180, 24),
+                                         parent=self)
 
         self.buttonFind = Button(label='Find Element',
                                  color='blue',
@@ -192,6 +192,17 @@ class ParserTab(QWidget):
     def updateFinish(self):
         pass
 
+    def onLaunch(self):
+        _webdriver = state['webdriver']
+        _url = self.url.getText()
+
+        if _webdriver == 'Firefox':
+            _webdriver_exe = paths.get_firefoxdriver()
+        else:
+            _webdriver_exe = paths.get_chromedriver()
+
+        self.engine.launch(_webdriver, _webdriver_exe, _url)
+
     def onParseFromChange(self):
         combo_text = self.parseFromCombo.getCurrentText()
 
@@ -224,6 +235,13 @@ class ParserTab(QWidget):
                          element=element,
                          target=target)
 
+    def onFindElement(self):
+        run_thread(threadpool=self.threadpool,
+                   function=self.findElement,
+                   on_update=self.updateProgress,
+                   on_result=self.updateResult,
+                   on_finish=self.updateFinish)
+
     def getElementAttribute(self, _progress):
         _attr = self.attrsCombo.getCurrentText()
 
@@ -242,42 +260,45 @@ class ParserTab(QWidget):
                    on_result=self.updateResult,
                    on_finish=self.updateFinish)
 
-    def onFindElement(self):
-        run_thread(threadpool=self.threadpool,
-                   function=self.findElement,
-                   on_update=self.updateProgress,
-                   on_result=self.updateResult,
-                   on_finish=self.updateFinish)
-
-    def onLaunch(self):
-        _webdriver = state['webdriver']
-        _url = self.url.getText()
-
-        if _webdriver == 'Firefox':
-            _webdriver_exe = paths.get_firefoxdriver()
-        else:
-            _webdriver_exe = paths.get_chromedriver()
-
-        self.engine.launch(_webdriver, _webdriver_exe, _url)
-
-    def onSetActive(self):
+    def setActiveElement(self, _progress):
         self.engine.set_active()
         self.attrsCombo.clearItems()
         self.attrsCombo.addItems(self.engine.active_element_attrs)
 
-    def onStore(self):
+    def onSetActiveElement(self):
+        run_thread(threadpool=self.threadpool,
+                   function=self.setActiveElement,
+                   on_update=self.updateProgress,
+                   on_result=self.updateResult,
+                   on_finish=self.updateFinish)
+
+    def storeElement(self, _progress):
         self.engine.store_element()
 
-    def onSetActiveFromHistory(self):
+    def onStoreElement(self):
+        run_thread(threadpool=self.threadpool,
+                   function=self.storeElement,
+                   on_update=self.updateProgress,
+                   on_result=self.updateResult,
+                   on_finish=self.updateFinish)
+
+    def setActiveFromHistory(self, _progress):
         history_element_name = self.history.getCurrentText()
 
         self.engine.set_active_from_history(history_element_name)
+
+    def onSetActiveFromHistory(self):
+        run_thread(threadpool=self.threadpool,
+                   function=self.setActiveFromHistory,
+                   on_update=self.updateProgress,
+                   on_result=self.updateResult,
+                   on_finish=self.updateFinish)
 
 
 if __name__ == '__main__':
     cssGuide = paths.get_css(obj=True).joinpath("_style.css").read_text()
     SEGOE = QFont("Segoe UI", 9)
-    
+
     app = QApplication(sys.argv)
     app.setFont(SEGOE)
     app.setStyle('Fusion')

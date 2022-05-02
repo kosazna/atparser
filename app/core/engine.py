@@ -2,7 +2,8 @@
 
 from selenium import webdriver
 from typing import Optional, List, Union, Dict
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import (NoSuchElementException,
+                                        StaleElementReferenceException)
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -57,34 +58,35 @@ class SeleniumEngine:
         sleep(state['launch_delay'])
 
     def _find_element(self, container, by, element, mode: str = 'single'):
+        if by == 'class':
+            _by = By.CLASS_NAME
+        elif by == 'id':
+            _by = By.ID
+        elif by == 'xpath':
+            _by = By.XPATH
+        elif by == 'css':
+            _by = By.CSS_SELECTOR
+        elif by == 'tag':
+            _by = By.TAG_NAME
+        elif by == 'partial':
+            _by = By.PARTIAL_LINK_TEXT
+        elif by == 'link text':
+            _by = By.LINK_TEXT
+
         try:
             if mode == 'multiple':
-                if by == 'class':
-                    _element = container.find_elements(By.CLASS_NAME, element)
-                elif by == 'id':
-                    _element = container.find_elements(By.ID, element)
-                elif by == 'xpath':
-                    _element = container.find_elements(By.XPATH, element)
-                elif by == 'css':
-                    _element = container.find_elements(By.CSS_SELECTOR, element)
-                elif by == 'tag':
-                    _element = container.find_elements(By.TAG_NAME, element)
+                _element = container.find_elements(_by, element)
             else:
-                if by == 'class':
-                    _element = container.find_element(By.CLASS_NAME, element)
-                elif by == 'id':
-                    _element = container.find_element(By.ID, element)
-                elif by == 'xpath':
-                    _element = container.find_element(By.XPATH, element)
-                elif by == 'css':
-                    _element = container.find_element(By.CSS_SELECTOR, element)
-                elif by == 'tag':
-                    _element = container.find_element(By.TAG_NAME, element)
+                _element = container.find_element(_by, element)
 
             return _element
         except NoSuchElementException as e:
-            log.error(e)
+            log.error(f"NoSuchElementException -> {by}: {element}")
             return None
+        except StaleElementReferenceException as e:
+            log.error(f"StaleElementReferenceException -> {by}: {element}")
+            return None
+
 
     def find(self,
              origin: Union[str, WebElement],
@@ -121,7 +123,7 @@ class SeleniumEngine:
                     self.found_element_name = name_tag
                     self.found_element = _elems
                 else:
-                    log.warning(f"\nElement wasn't found with {by}: {element}")
+                    log.warning(f"Element wasn't found with {by}: {element}")
             else:
                 name_tag = f"Single | {by} | {element}"
                 log.success(f"\nElement found | Name Tag: [{name_tag}]")
@@ -132,7 +134,7 @@ class SeleniumEngine:
                 self.found_element_name = name_tag
                 self.found_element = _element
         else:
-            log.warning(f"\nElement wasn't found with {by}: {element}")
+            log.warning(f"Element wasn't found with {by}: {element}")
 
     def set_active(self,
                    element_name: Optional[str] = None,
@@ -144,7 +146,8 @@ class SeleniumEngine:
             self.active_element = element
             self.active_element_name = element_name
         self.active_element_attrs = list(self.get_element_attributes().keys())
-        log.success(f"\nActive element changed to [{self.active_element_name}].\n")
+        log.success(
+            f"\nActive element changed to [{self.active_element_name}].\n")
 
     def set_active_from_history(self, element: str):
         _el_name = element
@@ -158,9 +161,11 @@ class SeleniumEngine:
     def get_element_attributes(self, element: Optional[WebElement] = None):
         if element is None:
             if isinstance(self.active_element, list):
-                _attrs = get_element_attributes(self.driver, self.active_element[0])
+                _attrs = get_element_attributes(
+                    self.driver, self.active_element[0])
             else:
-                _attrs = get_element_attributes(self.driver, self.active_element)
+                _attrs = get_element_attributes(
+                    self.driver, self.active_element)
         else:
             if isinstance(element, list):
                 _attrs = get_element_attributes(self.driver, element[0])
@@ -169,7 +174,7 @@ class SeleniumEngine:
 
         return _attrs
 
-    def get_attribute(self, attribute:str):
+    def get_attribute(self, attribute: str):
         if attribute == 'text':
             _attribute = 'textContent'
         else:
