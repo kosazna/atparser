@@ -1,1 +1,25 @@
-1651521082800	geckodriver	INFO	Listening on 127.0.0.1:56859
+1651521505961	geckodriver	INFO	Listening on 127.0.0.1:62405
+1651521509034	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilezkLPw1"
+1651521509333	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofilezkLPw1\\search.json.mozlz4", (void 0)))
+1651521511019	Marionette	INFO	Listening on port 62429
+console.warn: TopSitesFeed: Contile endpoint returned unexpected status: 403
+Read port: 62429
+1651521511136	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+1651521586497	Marionette	INFO	Stopped listening on port 62429
+
+###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
+
+1651521687139	geckodriver	INFO	Listening on 127.0.0.1:61096
+1651521690215	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "-no-remote" "-profile" "C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileUzKDVN"
+1651521690506	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\AZNAVO~1.K\\AppData\\Local\\Temp\\rust_mozprofileUzKDVN\\search.json.mozlz4", (void 0)))
+1651521692255	Marionette	INFO	Listening on port 61117
+Read port: 61117
+1651521692323	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: TopSitesFeed: Contile endpoint returned unexpected status: 403
+console.warn: LoginRecipes: "getRecipes: falling back to a synchronous message for:" "https://www.skroutz.gr"
+JavaScript error: https://www.skroutz.gr/assets/webpack/vendors~skr_load~stimulus-390b7985e04730cddfd57cbac58c8105.js, line 2: Error: Request aborted
+1651521910989	Marionette	INFO	Stopped listening on port 61117

@@ -393,6 +393,14 @@ class ParserTab(QWidget):
         _engine = self.selectEngine()
         _engine.store_element()
 
+        _parseFrom = self.parseFromCombo.getCurrentText()
+
+        if _parseFrom == "History":
+            _activeHistoryElement = self.history.getCurrentText()
+            self.history.clearItems()
+            self.history.addItems(state['history'])
+            self.history.setCurrentText(_activeHistoryElement)
+
     def onStoreElement(self):
         run_thread(threadpool=self.threadpool,
                    function=self.storeElement,

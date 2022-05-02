@@ -297,13 +297,20 @@ class BeautifulSoupEngine:
         if element is None:
             if isinstance(self.active_element, list):
                 _attrs = self.active_element[0].attrs
+                _text = self.active_element[0].text
             else:
                 _attrs = self.active_element.attrs
+                _text = self.active_element.text
         else:
             if isinstance(element, list):
                 _attrs = element[0].attrs
+                _text = element[0].text
             else:
                 _attrs = element.attrs
+                _text = element.text
+
+        if _text:
+            _attrs['text'] = _text
 
         return _attrs
 
