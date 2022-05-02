@@ -10,7 +10,7 @@ from at.io.copyfuncs import copy_pattern_from_files
 from at.logger import log
 from at.result import Result
 from atparser.app.settings import *
-from atparser.app.utils import paths, state
+from atparser.app.utils import paths, state, Element
 from atparser.app.core import SeleniumEngine
 from PyQt5.QtCore import Qt, QThreadPool, pyqtSignal
 from PyQt5.QtGui import QFont
@@ -20,7 +20,7 @@ from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
 # -> add alignment=Qt.AlignLeft when adding widget to layout
 
 
-class ParserTab(QWidget):
+class SeleniumParserTab(QWidget):
     def __init__(self,
                  size: Tuple[Optional[int]] = (None, None),
                  parent: Optional[QWidget] = None,
@@ -39,6 +39,10 @@ class ParserTab(QWidget):
         self.buttonStore.subscribe(self.onStoreElement)
         self.buttonSetActiveFromHistory.subscribe(self.onSetActiveFromHistory)
         self.buttonGetAttribute.subscribe(self.onGetElementAttribute)
+        self.buttonClick.subscribe(self.onClick)
+        self.buttonGetCookies.subscribe(self.onGetCookies)
+        self.buttonRefresh.subscribe(self.onRefresh)
+        self.buttonScroll.subscribe(self.onScrollDown)
 
     def setupUi(self, size):
         set_size(widget=self, size=size)
@@ -46,7 +50,8 @@ class ParserTab(QWidget):
         layout = QVBoxLayout()
         layout.setContentsMargins(2, 4, 2, 0)
 
-        urlLayout = QHBoxLayout()
+        urlLayout = QVBoxLayout()
+        topButtonLayout = QHBoxLayout()
         engineChecksLayout = QVBoxLayout()
         paramsLayout = QHBoxLayout()
         buttonLayout = QHBoxLayout()
@@ -60,11 +65,20 @@ class ParserTab(QWidget):
                             parent=self)
 
         self.buttonLaunch = Button(label='Launch',
+                                   size=(100, 24),
                                    parent=self)
 
-        self.engineCombo = ComboInput(label='Engine',
-                                      items=('selenium', 'bs4'),
-                                      parent=self)
+        self.buttonRefresh = Button(label='Refresh',
+                                    size=(100, 24),
+                                    parent=self)
+
+        self.buttonGetCookies = Button(label='Get Cookies',
+                                       size=(100, 24),
+                                       parent=self)
+
+        self.buttonScroll = Button(label='Scroll down',
+                                   size=(100, 24),
+                                   parent=self)
 
         self.parseFromCombo = ComboInput(label='Parse from',
                                          items=('Driver',
@@ -88,7 +102,7 @@ class ParserTab(QWidget):
 
         self.findParams = ComboInput(label='Params',
                                      items=FIND_PARAMS,
-                                     combosize=(80, 24),
+                                     combosize=(120, 24),
                                      parent=self)
 
         self.elementParams = StrInput(parent=self)
@@ -98,7 +112,7 @@ class ParserTab(QWidget):
                                      parent=self)
 
         self.buttonGetAttribute = Button(label='Get attribute',
-                                         size=(180, 24),
+                                         size=(150, 24),
                                          parent=self)
 
         self.buttonFind = Button(label='Find Element',
@@ -115,9 +129,6 @@ class ParserTab(QWidget):
         self.buttonClick = Button(label='Click',
                                         size=(150, 24),
                                         parent=self)
-        self.buttonScroll = Button(label='Scroll down',
-                                   size=(150, 24),
-                                   parent=self)
 
         self.status = StatusButton(parent=self)
 
@@ -126,12 +137,15 @@ class ParserTab(QWidget):
             "https://www.skroutz.gr/c/40/kinhta-thlefwna.html?from=families")
 
         urlLayout.addWidget(self.url)
-        urlLayout.addWidget(self.buttonLaunch)
+        topButtonLayout.addWidget(self.buttonLaunch, alignment=Qt.AlignRight)
+        topButtonLayout.addWidget(self.buttonRefresh)
+        topButtonLayout.addWidget(self.buttonScroll)
+        topButtonLayout.addWidget(self.buttonGetCookies)
+        urlLayout.addLayout(topButtonLayout)
         layout.addLayout(urlLayout)
         layout.addWidget(HLine())
         parseFromLayout.addWidget(self.parseFromCombo)
         parseFromLayout.addWidget(self.parseFromStatus, stretch=2)
-        engineChecksLayout.addWidget(self.engineCombo)
         engineChecksLayout.addLayout(parseFromLayout)
         layout.addLayout(engineChecksLayout)
         historyLayout.addWidget(self.history)
@@ -144,16 +158,14 @@ class ParserTab(QWidget):
         layout.addLayout(paramsLayout)
         layout.addWidget(HLine())
         attrsLayout.addWidget(self.attrsCombo)
-        attrsLayout.addWidget(self.buttonGetAttribute)
+        attrsLayout.addWidget(self.buttonGetAttribute, alignment=Qt.AlignRight)
+        attrsLayout.addWidget(self.buttonClick)
         layout.addLayout(attrsLayout)
         layout.addWidget(HLine())
-        interactionLayout.addWidget(self.buttonClick)
-        interactionLayout.addWidget(self.buttonScroll)
         actionElemLayout.addWidget(self.buttonSetActive)
         actionElemLayout.addWidget(self.buttonStore)
         buttonLayout.addWidget(self.buttonFind, alignment=Qt.AlignCenter)
         buttonLayout.addLayout(actionElemLayout)
-        buttonLayout.addLayout(interactionLayout)
         layout.addLayout(buttonLayout)
         layout.addWidget(self.status, stretch=2, alignment=Qt.AlignBottom)
         self.setLayout(layout)
@@ -191,6 +203,26 @@ class ParserTab(QWidget):
 
     def updateFinish(self):
         pass
+
+    def onGetCookies(self):
+        cookies = self.engine.get_cookies()
+        log.info(cookies)
+
+    def onScrollDown(self):
+        self.engine.scroll_down()
+
+    def onRefresh(self):
+        self.engine.refresh()
+
+    def click(self, _progress):
+        self.engine.click()
+
+    def onClick(self):
+        run_thread(threadpool=self.threadpool,
+                   function=self.click,
+                   on_update=self.updateProgress,
+                   on_result=self.updateResult,
+                   on_finish=self.updateFinish)
 
     def onLaunch(self):
         _webdriver = state['webdriver']
@@ -230,8 +262,9 @@ class ParserTab(QWidget):
         element = self.elementParams.getText()
         target = self.targetCombo.getCurrentText()
 
+        element = Element.from_text(f"{by}={element}")
+
         self.engine.find(origin=origin,
-                         by=by,
                          element=element,
                          target=target)
 
@@ -264,6 +297,8 @@ class ParserTab(QWidget):
         self.engine.set_active()
         self.attrsCombo.clearItems()
         self.attrsCombo.addItems(self.engine.active_element_attrs)
+
+        self.onParseFromChange()
 
     def onSetActiveElement(self):
         run_thread(threadpool=self.threadpool,
@@ -303,7 +338,7 @@ if __name__ == '__main__':
     app.setFont(SEGOE)
     app.setStyle('Fusion')
 
-    ui = ParserTab(size=(600, None))
+    ui = SeleniumParserTab(size=(600, None))
     ui.setStyleSheet(cssGuide)
     ui.show()
 
