@@ -1,0 +1,77 @@
+{
+  "config": {
+    "site": "www.skroutz.gr",
+    "parse": "single-page",
+    "data": ["title", "specs", "price", "image", "link"],
+    "database": "skroutz",
+    "delays": {
+      "launch": 4,
+      "scroll": 0.4,
+      "parse": [3, 4, 5, 6, 7, 8]
+    },
+    "engines": {
+      "interaction": "Selenium",
+      "data": "BeautifulSoup"
+    }
+  },
+  "elements": {
+    "interaction": {
+      "cookies": {
+        "name": "cookies",
+        "tag_name": "button",
+        "id": "accept-all",
+        "css_selector": "button#accept-all"
+      },
+      "paginator": {
+        "name": "paginator",
+        "tag_name": "ol",
+        "class_name": "react-component paginator",
+        "css_selector": "ol.react-component.paginator",
+        "children": {
+          "name": "next",
+          "tag_name": "li",
+          "css_selector": "li:last-child"
+        }
+      }
+    },
+    "data": {
+      "name": "main product card",
+      "tag_name": "li",
+      "class_name": "cf card with-skus-slider",
+      "css_selector": "li.cf.card.with-skus-slider",
+      "children": [
+        {
+          "name": "title",
+          "tag_name": "h2",
+          "attribute": "text"
+        },
+        {
+          "name": "specs",
+          "tag_name": "p",
+          "class_name": "specs",
+          "css_selector": "p.specs",
+          "attribute": "text"
+        },
+        {
+          "name": "price",
+          "tag_name": "a",
+          "class_name": "js-sku-link sku-link",
+          "css_selector": "a.js-sku-link.sku-link",
+          "attribute": "text"
+        },
+        {
+          "name": "image",
+          "tag_name": "img",
+          "attribute": "src"
+        },
+        {
+          "name": "link",
+          "tag_name": "a",
+          "class_name": "js-sku-link",
+          "css_selector": "a.js-sku-link",
+          "attribute": "href"
+        }
+      ]
+    }
+  }
+}

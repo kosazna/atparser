@@ -122,6 +122,9 @@ class ParserTab(QWidget):
         self.classParam = StrInput(label='Class',
                                    parent=self)
 
+        self.cssParam = StrInput(label='Css',
+                                   parent=self)
+
         self.idParam = StrInput(label='Id',
                                 parent=self)
 
@@ -179,6 +182,7 @@ class ParserTab(QWidget):
         bs4ParamsLayout.addWidget(self.tagElem)
         bs4ParamsLayout.addWidget(self.classParam)
         bs4ParamsLayout.addWidget(self.idParam)
+        bs4ParamsLayout.addWidget(self.cssParam)
         layout.addLayout(bs4ParamsLayout)
         layout.addWidget(HLine())
         attrsLayout.addWidget(self.attrsCombo)
@@ -324,6 +328,7 @@ class ParserTab(QWidget):
             tagParam = self.tagElem.getCurrentText()
             classParam = self.classParam.getText()
             idParam = self.idParam.getText()
+            cssParam = self.cssParam.getText()
 
             target = self.targetCombo.getCurrentText()
 
@@ -337,9 +342,15 @@ class ParserTab(QWidget):
             else:
                 _id = idParam
 
+            if cssParam == '':
+                _css = None
+            else:
+                _css = cssParam
+
             element = Element(tag_name=tagParam,
                               class_name=_class,
-                              id=_id)
+                              id=_id,
+                              css_selector=_css)
 
             self.bsEngine.refresh_soup_from_selenium_engine(self.seleniumEngine)
 
