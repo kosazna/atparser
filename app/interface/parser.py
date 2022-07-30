@@ -3,9 +3,7 @@ import sys
 from typing import Any, Optional, Tuple
 
 from at.auth.client import AuthStatus
-from at.gui.components import *
-from at.gui.utils import set_size
-from at.gui.worker import run_thread
+from at.gui import *
 from at.logger import log
 from at.result import Result
 from atparser.app.settings import *
@@ -20,7 +18,7 @@ from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
 # -> add alignment=Qt.AlignLeft when adding widget to layout
 
 
-class ParserTab(QWidget):
+class ParserTab(AtWidget):
     def __init__(self,
                  size: Tuple[Optional[int]] = (None, None),
                  parent: Optional[QWidget] = None,
@@ -29,21 +27,7 @@ class ParserTab(QWidget):
         super().__init__(parent=parent, *args, **kwargs)
         self.seleniumEngine = SeleniumEngine()
         self.bsEngine = BeautifulSoupEngine()
-        self.setupUi(size)
-        self.threadpool = QThreadPool(parent=self)
-        self.popup = Popup(state['appname'])
-
-        self.parseFromCombo.subscribe(self.onParseFromChange)
-        self.buttonLaunch.subscribe(self.onLaunch)
-        self.buttonFind.subscribe(self.onFindElement)
-        self.buttonSetActive.subscribe(self.onSetActiveElement)
-        self.buttonStore.subscribe(self.onStoreElement)
-        self.buttonSetActiveFromHistory.subscribe(self.onSetActiveFromHistory)
-        self.buttonGetAttribute.subscribe(self.onGetElementAttribute)
-        self.buttonClick.subscribe(self.onClick)
-        self.buttonGetCookies.subscribe(self.onGetCookies)
-        self.buttonRefresh.subscribe(self.onRefresh)
-        self.buttonScroll.subscribe(self.onScrollDown)
+        self.initUi(size) 
 
     def setupUi(self, size):
         set_size(widget=self, size=size)
@@ -153,10 +137,6 @@ class ParserTab(QWidget):
 
         self.status = StatusButton(parent=self)
 
-        self.parseFromStatus.setText('Selenium WebDriver')
-        self.url.setText(
-            "https://www.skroutz.gr/c/40/kinhta-thlefwna.html?from=families")
-
         urlLayout.addWidget(self.url)
         topButtonLayout.addWidget(self.buttonLaunch, alignment=Qt.AlignRight)
         topButtonLayout.addWidget(self.buttonRefresh)
@@ -198,39 +178,21 @@ class ParserTab(QWidget):
         layout.addWidget(self.status, stretch=2, alignment=Qt.AlignBottom)
         self.setLayout(layout)
 
-    def updateProgress(self, metadata: dict):
-        if metadata:
-            progress_now = metadata.get('pbar', None)
-            progress_max = metadata.get('pbar_max', None)
-            status = metadata.get('status', None)
-            count = metadata.get('count', None)
-
-            if progress_now is not None:
-                self.progress.setValue(progress_now)
-            if progress_max is not None:
-                self.progress.setMaximum(progress_max)
-            if status is not None:
-                self.status.disable(str(status))
-            if count is not None:
-                self.setCount(count)
-
-    def updateResult(self, status: Any):
-        if status is not None:
-            if isinstance(status, AuthStatus):
-                if not status.authorised:
-                    self.popup.error(status.msg)
-            elif isinstance(status, Result):
-                if status.result == Result.ERROR:
-                    self.popup.error(status.msg)
-                elif status.result == Result.WARNING:
-                    self.popup.warning(status.msg, **status.details)
-                else:
-                    self.popup.info(status.msg, **status.details)
-            else:
-                self.popup.info(status)
-
-    def updateFinish(self):
-        pass
+    def initUi(self, size:tuple):
+        self.setupUi(size)
+        self.popup.set_appname(state['appname'])
+        self.parseFromStatus.setText('Selenium WebDriver')
+        self.parseFromCombo.subscribe(self.onParseFromChange)
+        self.buttonLaunch.subscribe(self.onLaunch)
+        self.buttonFind.subscribe(self.onFindElement)
+        self.buttonSetActive.subscribe(self.onSetActiveElement)
+        self.buttonStore.subscribe(self.onStoreElement)
+        self.buttonSetActiveFromHistory.subscribe(self.onSetActiveFromHistory)
+        self.buttonGetAttribute.subscribe(self.onGetElementAttribute)
+        self.buttonClick.subscribe(self.onClick)
+        self.buttonGetCookies.subscribe(self.onGetCookies)
+        self.buttonRefresh.subscribe(self.onRefresh)
+        self.buttonScroll.subscribe(self.onScrollDown)
 
     def selectEngine(self):
         _engine = self.engineSelect.getCurrentText()

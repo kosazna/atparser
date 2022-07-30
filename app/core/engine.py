@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from typing import Optional, List, Union, Dict
@@ -61,7 +62,8 @@ class SeleniumEngine:
             profile.set_preference(
                 "general.useragent.override", agent)
             self.driver = webdriver.Firefox(firefox_profile=profile,
-                                            executable_path=executable)
+                                            executable_path=executable,
+                                            service_log_path=os.devnull)
             self.driver.maximize_window()
         else:
             print(f'Browser not supported: {browser}')

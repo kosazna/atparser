@@ -3,8 +3,7 @@ import sys
 from pathlib import Path
 from typing import Any, Optional, Tuple
 from at.auth.client import AuthStatus, licensed
-from at.gui.components import *
-from at.gui.utils import set_size
+from at.gui import *
 from at.gui.worker import run_thread
 from at.logger import log
 from at.result import Result
@@ -18,7 +17,7 @@ from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
 # -> add alignment=Qt.AlignLeft when adding widget to layout
 
 
-class SettingsTab(QWidget):
+class SettingsTab(AtWidget):
     settingsChanged = pyqtSignal()
     serverStatusChanged = pyqtSignal(tuple)
 
@@ -28,12 +27,7 @@ class SettingsTab(QWidget):
                  *args,
                  **kwargs) -> None:
         super().__init__(parent=parent, *args, **kwargs)
-        self.setupUi(size)
-        self.threadpool = QThreadPool(parent=self)
-        self.popup = Popup(state['appname'])
-
-        self.driverSelect.subscribe(self.onDriverChange)
-        self.saveButton.subscribe(self.onSave)
+        self.initUi(size)
 
     def setupUi(self, size):
         set_size(widget=self, size=size)
@@ -50,13 +44,11 @@ class SettingsTab(QWidget):
         self.version = Label(icon='hash',
                              label=state['version'],
                              parent=self)
-
         self.driverSelect = ComboInput(label="WebDriver",
                                        labelsize=(140, 24),
                                        combosize=(100, 24),
                                        items=('Firefox', 'Chrome'),
                                        parent=self)
-
         self.driverExist = StatusLabel(icon='hdd-network-fill',
                                        statussize=(110, 24),
                                        parent=self)
@@ -72,19 +64,10 @@ class SettingsTab(QWidget):
                                        labelsize=(140, 24),
                                        editsize=(100, 24),
                                        parent=self)
-
         self.saveButton = Button(label="Αποθήκευση Αλλαγών",
                                  size=(160, 26),
                                  parent=self)
-
         self.status = StatusButton(parent=self)
-
-        self.driverSelect.setCurrentText(state['webdriver'])
-        self.delayLaunch.setText(str(state['launch_delay']))
-        self.delayUrlChange.setText(str(state['urlchange_delay']))
-        self.delayPaginator.setText(str(state['paginator_delay']))
-
-        self.checkDrivers()
 
         labelLayout.addWidget(self.app)
         labelLayout.addWidget(self.version, stretch=2, alignment=Qt.AlignLeft)
@@ -92,7 +75,8 @@ class SettingsTab(QWidget):
         layout.addWidget(HLine())
         driverLayout.addWidget(self.driverSelect)
         driverLayout.addWidget(self.driverExist,
-                               stretch=2, alignment=Qt.AlignLeft)
+                               stretch=2,
+                               alignment=Qt.AlignLeft)
         layout.addLayout(driverLayout)
         layout.addWidget(self.delayLaunch, alignment=Qt.AlignLeft)
         layout.addWidget(self.delayUrlChange, alignment=Qt.AlignLeft)
@@ -106,36 +90,15 @@ class SettingsTab(QWidget):
 
         self.setLayout(layout)
 
-    def updateProgress(self, metadata: dict):
-        if metadata:
-            progress_now = metadata.get('pbar', None)
-            progress_max = metadata.get('pbar_max', None)
-            status = metadata.get('status', None)
-
-            if progress_now is not None:
-                self.progress.setValue(progress_now)
-            if progress_max is not None:
-                self.progress.setMaximum(progress_max)
-            if status is not None:
-                self.status.disable(str(status))
-
-    def updateResult(self, status: Any):
-        if status is not None:
-            if isinstance(status, AuthStatus):
-                if not status.authorised:
-                    self.popup.error(status.msg)
-            elif isinstance(status, Result):
-                if status.result == Result.ERROR:
-                    self.popup.error(status.msg)
-                elif status.result == Result.WARNING:
-                    self.popup.warning(status.msg, **status.details)
-                else:
-                    self.popup.info(status.msg, **status.details)
-            else:
-                self.popup.info(status)
-
-    def updateFinish(self):
-        pass
+    def initUi(self, size: tuple):
+        self.setupUi(size)
+        self.driverSelect.setCurrentText(state['webdriver'])
+        self.delayLaunch.setText(str(state['launch_delay']))
+        self.delayUrlChange.setText(str(state['urlchange_delay']))
+        self.delayPaginator.setText(str(state['paginator_delay']))
+        self.checkDrivers()
+        self.driverSelect.subscribe(self.onDriverChange)
+        self.saveButton.subscribe(self.onSave)
 
     def checkDrivers(self):
         if self.driverSelect.getCurrentText() == 'chrome':
