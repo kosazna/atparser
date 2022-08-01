@@ -23,6 +23,7 @@ from at.logger import log
 class SeleniumEngine:
     def __init__(self) -> None:
         self.driver = None
+        self.is_online = False
         self.active_element_name: str = ''
         self.active_element_attrs: Optional[list] = None
         self.active_element: Optional[Union[WebElement,
@@ -69,7 +70,9 @@ class SeleniumEngine:
             print(f'Browser not supported: {browser}')
             return
 
-        self.driver.get(url)
+        if url is not None:
+            self.driver.get(url)
+        self.is_online = True
 
     def _find_element(self, container, element: Element, mode: str = 'single'):
         try:
@@ -119,6 +122,7 @@ class SeleniumEngine:
                             log.info(f"{_attr}: {_attrs[_attr]}")
                     self.found_element_name = name_tag
                     self.found_element = _elems
+                    self.store_element()
                 else:
                     log.warning(f"{element} wasn't found")
             else:
@@ -129,6 +133,7 @@ class SeleniumEngine:
                     log.info(f"{_attr}: {_attrs[_attr]}")
                 self.found_element_name = name_tag
                 self.found_element = _element
+                self.store_element()
         else:
             log.warning(f"{element} wasn't found")
 
@@ -257,6 +262,7 @@ class BeautifulSoupEngine:
                             log.info(f"{_attr}: {_attrs[_attr]}")
                     self.found_element_name = name_tag
                     self.found_element = _elems
+                    self.store_element()
                 else:
                     log.warning(f"{element} wasn't found")
             else:
@@ -267,6 +273,7 @@ class BeautifulSoupEngine:
                     log.info(f"{_attr}: {_attrs[_attr]}")
                 self.found_element_name = name_tag
                 self.found_element = _element
+                self.store_element()
         else:
             log.warning(f"{element} wasn't found")
 

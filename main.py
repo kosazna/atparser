@@ -27,7 +27,7 @@ if __name__ == "__main__":
     app.setFont(SEGOE)
     app.setStyle('Fusion')
 
-    ui = WebParserUI(size=(None, 650))
+    ui = WebParserUI(size=(None, 700))
     ui.show()
 
     sys.exit(app.exec_())

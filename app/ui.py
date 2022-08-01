@@ -33,7 +33,7 @@ class WebParserUI(QWidget):
         self.setObjectName("MainWidget")
         self.setStyleSheet(cssGuide)
         self.setWindowTitle(f"{state['appname']}")
-        self.move(260, 150)
+        self.move(150, 150)
 
         set_size(widget=self, size=size)
 
@@ -44,9 +44,9 @@ class WebParserUI(QWidget):
         self.tabs = QTabWidget(parent=self)
         self.tabs.setDocumentMode(True)
 
-        self.settingsTab = SettingsTab(size=(600, None), parent=self)
+        self.settingsTab = SettingsTab(size=(700, None), parent=self)
         self.tabs.addTab(self.settingsTab, "Settings")
-        self.parserTab = ParserTab(size=(600, None), parent=self)
+        self.parserTab = ParserTab(size=(700, None), parent=self)
         self.tabs.addTab(self.parserTab, "Parsers")
         # self.countTab = CountTab(size=(700, None), parent=self)
         # self.tabs.addTab(self.countTab, "Καταμέτρηση")
