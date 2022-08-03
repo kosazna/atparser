@@ -207,16 +207,17 @@ class ParserTab(AtWidget):
         self.statusBS.changeStatus('no data', 'statusError')
         self.parseFromCombo.subscribe(self.onParseFromChange)
         self.buttonLaunch.subscribe(self.onLaunch)
-        self.buttonFind.subscribe(self.onFindElement)
-        self.buttonSetActive.subscribe(self.onSetActiveElement)
-        self.buttonStore.subscribe(self.onStoreElement)
-        self.buttonSetActiveFromHistory.subscribe(self.onSetActiveFromHistory)
-        self.buttonGetAttribute.subscribe(self.onGetElementAttribute)
-        self.buttonClick.subscribe(self.onClick)
+        self.buttonFind.subscribe(lambda: self.runThread(self.onFindElement))
+        self.buttonSetActive.subscribe(lambda: self.runThread(self.onSetActiveElement))
+        self.buttonStore.subscribe(lambda: self.runThread(self.onStoreElement))
+        self.buttonSetActiveFromHistory.subscribe(lambda: self.runThread(self.onSetActiveFromHistory))
+        self.buttonGetAttribute.subscribe(lambda: self.runThread(self.onGetElementAttribute))
+        self.buttonClick.subscribe(lambda: self.runThread(self.onClick))
         self.buttonGetCookies.subscribe(self.onGetCookies)
         self.buttonRefresh.subscribe(self.onRefresh)
         self.buttonScroll.subscribe(self.onScrollDown)
         self.buttonRequest.subscribe(lambda: self.runThread(self.onRequest))
+        # self.cssParam.textChanged(self.parseCssSelector)
 
     def getParams(self, key: Optional[str] = None):
         params = {
@@ -235,6 +236,16 @@ class ParserTab(AtWidget):
         }
 
         return params if key is None else params.get(key)
+
+    def parseCssSelector(self):
+        css_selector = self.getParams('bs_css')
+
+        splitted = css_selector.split('.')
+
+        if splitted:
+            tag = splitted[0]
+            if tag in MOST_COMMON_HTML_TAGS:
+                self.tagElem.setCurrentText(tag)
 
     def selectEngine(self):
         _engine = self.engineSelect.getCurrentText()
@@ -271,18 +282,11 @@ class ParserTab(AtWidget):
         self.parseFromCombo.setCurrentText('Soup')
         self.statusBS.changeStatus('data available', 'statusOk')
 
-    def click(self, _progress):
+    def onClick(self, _progress):
         if self.seleniumEngine.driver is not None and self.seleniumEngine.active_element is not None:
             self.seleniumEngine.click()
         else:
             log.error("No active element to click.")
-
-    def onClick(self):
-        run_thread(threadpool=self.threadpool,
-                   function=self.click,
-                   on_update=self.updateProgress,
-                   on_result=self.updateResult,
-                   on_finish=self.updateFinish)
 
     def onLaunch(self):
         _webdriver = state['webdriver']
@@ -316,7 +320,7 @@ class ParserTab(AtWidget):
             self.history.clearItems()
             self.history.addItems(state['history'].keys())
 
-    def findElement(self, _progress):
+    def onFindElement(self, _progress):
         params = self.getParams()
         parse_from = params['parse_from']
 
@@ -339,7 +343,7 @@ class ParserTab(AtWidget):
                                      element=element,
                                      target=target)
         else:
-            tagParam = params['bs_tag']
+            tagParam = params['bs_tag'] or None
             classParam = params['bs_class'] or None
             idParam = params['bs_id'] or None
             cssParam = params['bs_css'] or None
@@ -357,14 +361,7 @@ class ParserTab(AtWidget):
                                element=element,
                                target=target)
 
-    def onFindElement(self):
-        run_thread(threadpool=self.threadpool,
-                   function=self.findElement,
-                   on_update=self.updateProgress,
-                   on_result=self.updateResult,
-                   on_finish=self.updateFinish)
-
-    def getElementAttribute(self, _progress):
+    def onGetElementAttribute(self, _progress):
         _attr = self.getParams('attribute')
 
         _engine = self.selectEngine()
@@ -377,14 +374,7 @@ class ParserTab(AtWidget):
         else:
             log.info(texts)
 
-    def onGetElementAttribute(self):
-        run_thread(threadpool=self.threadpool,
-                   function=self.getElementAttribute,
-                   on_update=self.updateProgress,
-                   on_result=self.updateResult,
-                   on_finish=self.updateFinish)
-
-    def setActiveElement(self, _progress):
+    def onSetActiveElement(self, _progress):
         _engine = self.selectEngine()
         _engine.set_active()
         self.attrsCombo.clearItems()
@@ -393,14 +383,7 @@ class ParserTab(AtWidget):
 
         self.onParseFromChange()
 
-    def onSetActiveElement(self):
-        run_thread(threadpool=self.threadpool,
-                   function=self.setActiveElement,
-                   on_update=self.updateProgress,
-                   on_result=self.updateResult,
-                   on_finish=self.updateFinish)
-
-    def storeElement(self, _progress):
+    def onStoreElement(self, _progress):
         _engine = self.selectEngine()
         _engine.store_element()
 
@@ -412,14 +395,7 @@ class ParserTab(AtWidget):
             self.history.addItems(state['history'])
             self.history.setCurrentText(_activeHistoryElement)
 
-    def onStoreElement(self):
-        run_thread(threadpool=self.threadpool,
-                   function=self.storeElement,
-                   on_update=self.updateProgress,
-                   on_result=self.updateResult,
-                   on_finish=self.updateFinish)
-
-    def setActiveFromHistory(self, _progress):
+    def onSetActiveFromHistory(self, _progress):
         history_element_name = self.getParams('history')
 
         if history_element_name:
@@ -429,13 +405,6 @@ class ParserTab(AtWidget):
             self.parseFromCombo.setCurrentText('Active element')
         else:
             log.warning("No element was chosen from history")
-
-    def onSetActiveFromHistory(self):
-        run_thread(threadpool=self.threadpool,
-                   function=self.setActiveFromHistory,
-                   on_update=self.updateProgress,
-                   on_result=self.updateResult,
-                   on_finish=self.updateFinish)
 
 
 if __name__ == '__main__':

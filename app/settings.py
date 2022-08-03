@@ -19,15 +19,16 @@ if Path(f"C:/Users/{USERNAME}/.{APPNAME}/static/{ICONNAME}").exists():
 else:
     APPICON = ICONNAME
 
-FIND_PARAMS = ('class name',
+FIND_PARAMS = ('css selector',
+               'class name',
                'tag name',
-               'css selector',
                'id',
                'xpath',
                'link text',
                'partial link text')
 
-MOST_COMMON_HTML_TAGS = ('div',
+MOST_COMMON_HTML_TAGS = ('',
+                         'div',
                          'span',
                          'a',
                          'p',
