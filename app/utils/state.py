@@ -12,4 +12,5 @@ state.set({'appname': APPNAME,
            'paginator_delay': PAGINATOR_DELAY,
            'launch_delay': LAUNCH_DELAY,
            'urlchange_delay': URLCHANGE_DELAY,
-           'history': {}})
+           'history': {},
+           'elements': {}})

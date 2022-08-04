@@ -5,7 +5,7 @@ from typing import Optional, Tuple
 from at.gui.components import Console
 from at.gui.utils import set_size
 from at.logger import log
-from atparser.app.interface import CreatorTab, ParserTab, SettingsTab
+from atparser.app.interface import CreatorTab, ParserTab, SettingsTab, SerializerTab
 from atparser.app.settings import *
 from atparser.app.utils import paths, state
 from PyQt5.QtCore import Qt, QThreadPool, pyqtSlot
@@ -26,6 +26,7 @@ class WebParserUI(QWidget):
         self.setupUi(size)
         self.threadpool = QThreadPool(parent=self)
         self.parserTab.historyChanged.connect(self.onHistoryChanged)
+        self.creatorTab.elementAdded.connect(self.onCreatedElement)
     
 
     def setupUi(self, size):
@@ -47,10 +48,10 @@ class WebParserUI(QWidget):
         self.tabs.addTab(self.settingsTab, "Settings")
         self.parserTab = ParserTab(size=TABSIZE, parent=self)
         self.tabs.addTab(self.parserTab, "Parsers")
-        self.creator = CreatorTab(size=TABSIZE, parent=self)
-        self.tabs.addTab(self.creator, "Creator")
-        # self.paradosiTab = ParadosiTab(size=(700, None), parent=self)
-        # self.tabs.addTab(self.paradosiTab, "Παράδοση")
+        self.creatorTab = CreatorTab(size=TABSIZE, parent=self)
+        self.tabs.addTab(self.creatorTab, "Creator")
+        self.serializerTab = SerializerTab(size=(700, None), parent=self)
+        self.tabs.addTab(self.serializerTab, "Serializer")
         # self.anartisiTab = AnartisiTab(size=(700, None), parent=self)
         # self.tabs.addTab(self.anartisiTab, "Ανάρτηση")
         # self.organizeTab = OrganizeTab(size=(700, None), parent=self)
@@ -67,9 +68,15 @@ class WebParserUI(QWidget):
 
     @pyqtSlot()
     def onHistoryChanged(self):
-        self.creator.history.clearItems()
-        self.creator.history.addItems(state['history'].keys())
+        self.creatorTab.history.clearItems()
+        self.creatorTab.history.addItems(state['history'].keys())
 
+    @pyqtSlot()
+    def onCreatedElement(self):
+        self.serializerTab.childrenElem.clearContent()
+        self.serializerTab.childrenElem.addItems(list(state['elements'].keys()))
+        self.serializerTab.elements.clearItems()
+        self.serializerTab.elements.addItems(state['elements'].keys())
     # @pyqtSlot(tuple)
     # def onServerStatusChanged(self, status):
     #     self.filesTab.server.changeStatus(*status)

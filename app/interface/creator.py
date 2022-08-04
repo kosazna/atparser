@@ -19,6 +19,8 @@ from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
 
 
 class CreatorTab(AtWidget):
+    elementAdded = pyqtSignal()
+
     def __init__(self,
                  size: Tuple[Optional[int]] = (None, None),
                  parent: Optional[QWidget] = None,
@@ -88,24 +90,31 @@ class CreatorTab(AtWidget):
     def initUi(self, size: tuple):
         self.setupUi(size)
         self.history.addItems(state['history'].keys())
+        self.buttonAddElement.subscribe(self.onAddElement)
 
     def getParams(self, key: Optional[str] = None):
         params = {
-            'engine': self.engineSelect.getCurrentText(),
-            'url': self.url.getText(),
-            'parse_from': self.parseFromCombo.getCurrentText(),
-            'history': self.history.getCurrentText(),
-            'target': self.targetCombo.getCurrentText(),
-            'selenium_find_by': self.findParams.getCurrentText(),
-            'selenium_find_params': self.elementParams.getText(),
-            'bs_tag': self.tagElem.getCurrentText(),
-            'bs_class': self.classParam.getText(),
-            'bs_id': self.idParam.getText(),
-            'bs_css': self.cssParam.getText(),
-            'attribute': self.attrsCombo.getCurrentText()
+            'name': self.elName.getText() or None,
+            'tag_name': self.elTag.getCurrentText() or None,
+            'class_name': self.elClass.getText() or None,
+            'id': self.elId.getText() or None,
+            'xpath': self.elXpath.getText() or None,
+            'css_selector': self.elCss.getText() or None,
+            'attribute': self.elAttribute.getText() or None,
+            'default': self.elDefault.getText() or None,
+            'many': self.elMany.isChecked()
         }
 
         return params if key is None else params.get(key)
+
+    def onAddElement(self):
+        params = self.getParams()
+
+        element = Element(**params)
+
+        state['elements'].update({str(element): element})
+
+        self.elementAdded.emit()
 
 
 if __name__ == '__main__':
