@@ -19,6 +19,9 @@ if Path(f"C:/Users/{USERNAME}/.{APPNAME}/static/{ICONNAME}").exists():
 else:
     APPICON = ICONNAME
 
+LABELSIZE = (70,24)
+COMBOSIZE = (120, 24) 
+
 FIND_PARAMS = ('css selector',
                'class name',
                'tag name',

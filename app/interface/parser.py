@@ -19,6 +19,8 @@ from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
 
 
 class ParserTab(AtWidget):
+    historyChanged = pyqtSignal()
+
     def __init__(self,
                  size: Tuple[Optional[int]] = (None, None),
                  parent: Optional[QWidget] = None,
@@ -77,7 +79,7 @@ class ParserTab(AtWidget):
                                                 'History'),
                                          combosize=(120, 24),
                                          parent=self)
-        self.parseFromStatus = StatusLabel(statussize=(650, 22),
+        self.parseFromStatus = StatusLabel(statussize=(680, 22),
                                            parent=self)
 
         self.history = ComboInput(label='History',
@@ -360,6 +362,8 @@ class ParserTab(AtWidget):
             self.bsEngine.find(origin=origin,
                                element=element,
                                target=target)
+
+        self.historyChanged.emit()
 
     def onGetElementAttribute(self, _progress):
         _attr = self.getParams('attribute')

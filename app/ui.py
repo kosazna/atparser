@@ -6,7 +6,7 @@ from at.gui.components import Console
 from at.gui.utils import set_size
 from at.logger import log
 from atparser.app.utils import paths, state
-from atparser.app.interface import SettingsTab, ParserTab
+from atparser.app.interface import SettingsTab, ParserTab, CreatorTab
 from atparser.app.settings import *
 from PyQt5.QtCore import Qt, QThreadPool, pyqtSlot
 from PyQt5.QtGui import QFont
@@ -26,7 +26,7 @@ class WebParserUI(QWidget):
         super().__init__(parent=parent, *args, **kwargs)
         self.setupUi(size)
         self.threadpool = QThreadPool(parent=self)
-        # self.settingsTab.settingsChanged.connect(self.onSettingsUpdate)
+        self.parserTab.historyChanged.connect(self.onHistoryChanged)
     
 
     def setupUi(self, size):
@@ -48,8 +48,8 @@ class WebParserUI(QWidget):
         self.tabs.addTab(self.settingsTab, "Settings")
         self.parserTab = ParserTab(size=(700, None), parent=self)
         self.tabs.addTab(self.parserTab, "Parsers")
-        # self.countTab = CountTab(size=(700, None), parent=self)
-        # self.tabs.addTab(self.countTab, "Καταμέτρηση")
+        self.creator = CreatorTab(size=(700, None), parent=self)
+        self.tabs.addTab(self.creator, "Creator")
         # self.paradosiTab = ParadosiTab(size=(700, None), parent=self)
         # self.tabs.addTab(self.paradosiTab, "Παράδοση")
         # self.anartisiTab = AnartisiTab(size=(700, None), parent=self)
@@ -66,82 +66,10 @@ class WebParserUI(QWidget):
 
         self.setLayout(self.appLayout)
 
-    # @pyqtSlot()
-    # def onSettingsUpdate(self):
-    #     mel_shapes = db.get_shapes(state['meleti'])
-    #     mel_shapes_mdb = db.get_shapes(state['meleti'], mdb=True)
-    #     mel_otas = db.get_ota_per_meleti_company(state['meleti'],
-    #                                              state['company'])
-    #     melType = state[state['meleti']]['type']
-
-    #     all_path_mapping = {'LocalData': paths.get_localdata(),
-    #                         'ParadosiData': paths.get_paradosidata(),
-    #                         'Other...': ''}
-    #     paradosi_path_mapping = {'ParadosiData': paths.get_paradosidata(),
-    #                              'Other...': ''}
-
-    #     organizeInputFolders = {"Ανακτήσεις": paths.get_anaktiseis_in(),
-    #                             "Σαρωμένα": paths.get_saromena_in(),
-    #                             "Χωρικά": paths.get_localdata(),
-    #                             'Other...': ''}
-    #     organizeOutputFolders = {"Ανακτήσεις": paths.get_anaktiseis_out(),
-    #                              "Σαρωμένα": paths.get_saromena_out(),
-    #                              "Χωρικά": paths.get_localdata(),
-    #                              "Παράδοση - Περιγραφικά": paths.get_paradosidata(True).joinpath(DATABASES).as_posix(),
-    #                              "Παράδοση - Χωρικά": paths.get_paradosidata(True).joinpath(SPATIAL).as_posix(),
-    #                              "Παράδοση - Συνημμένα": paths.get_paradosidata(True).joinpath(OTHER).as_posix(),
-    #                              'Other...': ''}
-
-    #     self.filesTab.meleti.setText(state['meleti'])
-    #     self.filesTab.fullname.setText(state['fullname'])
-    #     self.filesTab.company.setText(state['company'])
-    #     self.filesTab.shape.clearContent()
-    #     self.filesTab.shape.addItems(mel_shapes)
-    #     self.filesTab.otas.clearContent()
-    #     self.filesTab.otas.addItems(mel_otas)
-    #     self.filesTab.localWidget.setCurrentText(melType)
-
-    #     self.countTab.meleti.setText(state['meleti'])
-    #     self.countTab.fullname.setText(state['fullname'])
-    #     self.countTab.company.setText(state['company'])
-    #     self.countTab.refreshShapes()
-    #     self.countTab.folder.clearItems()
-    #     self.countTab.folder.addItems(all_path_mapping)
-
-    #     self.organizeTab.meleti.setText(state['meleti'])
-    #     self.organizeTab.fullname.setText(state['fullname'])
-    #     self.organizeTab.company.setText(state['company'])
-    #     self.organizeTab.inputFolder.clearItems()
-    #     self.organizeTab.inputFolder.addItems(organizeInputFolders)
-    #     self.organizeTab.ouputFolder.clearItems()
-    #     self.organizeTab.ouputFolder.addItems(organizeOutputFolders)
-
-    #     self.paradosiTab.meleti.setText(state['meleti'])
-    #     self.paradosiTab.fullname.setText(state['fullname'])
-    #     self.paradosiTab.company.setText(state['company'])
-    #     self.paradosiTab.folderOutput.clearItems()
-    #     self.paradosiTab.folderOutput.addItems(paradosi_path_mapping)
-    #     self.paradosiTab.shape.clearContent()
-    #     self.paradosiTab.shape.addItems(mel_shapes)
-    #     self.paradosiTab.otas.clearContent()
-    #     self.paradosiTab.otas.addItems(mel_otas)
-    #     self.paradosiTab.selectorMetadata.setCurrentText(melType)
-    #     self.paradosiTab.selectorSpatial.setCurrentText(melType)
-
-    #     self.anartisiTab.meleti.setText(state['meleti'])
-    #     self.anartisiTab.fullname.setText(state['fullname'])
-    #     self.anartisiTab.company.setText(state['company'])
-
-    #     self.miscTab.meleti.setText(state['meleti'])
-    #     self.miscTab.fullname.setText(state['fullname'])
-    #     self.miscTab.company.setText(state['company'])
-    #     self.miscTab.shape.clearContent()
-    #     self.miscTab.shape.addItems(mel_shapes_mdb)
-    #     self.miscTab.otas.clearContent()
-    #     self.miscTab.otas.addItems(mel_otas)
-    #     self.miscTab.schema.setCurrentText(melType)
-
-    #     self.check_auth()
+    @pyqtSlot()
+    def onHistoryChanged(self):
+        self.creator.history.clearItems()
+        self.creator.history.addItems(state['history'].keys())
 
     # @pyqtSlot(tuple)
     # def onServerStatusChanged(self, status):
