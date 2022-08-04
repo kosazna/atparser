@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from at.utils import user
 from pathlib import Path
+
+from at.utils import user
 
 APPNAME = "webparser"
 VERSION = "0.1.1"

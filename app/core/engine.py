@@ -1,23 +1,19 @@
 # -*- coding: utf-8 -*-
 
 import os
+from typing import Dict, List, Optional, Union
+
+from at.logger import log
+from at.web import (Element, get_dom_element_attributes, get_user_agent,
+                    multi_parse_soup, parse_soup, request_soup, scroll_down)
+from atparser.app.utils import state
 from bs4 import BeautifulSoup
+from bs4.element import Tag
 from selenium import webdriver
-from typing import Optional, List, Union, Dict
 from selenium.common.exceptions import (NoSuchElementException,
                                         StaleElementReferenceException)
-from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.chrome.options import Options
-from at.web import (scroll_down,
-                    get_user_agent,
-                    request_soup,
-                    get_dom_element_attributes,
-                    Element,
-                    parse_soup,
-                    multi_parse_soup)
-from bs4.element import Tag
-from atparser.app.utils import state
-from at.logger import log
+from selenium.webdriver.remote.webelement import WebElement
 
 
 class SeleniumEngine:

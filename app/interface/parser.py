@@ -2,15 +2,14 @@
 import sys
 from typing import Any, Optional, Tuple
 
-from at.auth.client import AuthStatus
 from at.gui import *
 from at.logger import log
 from at.result import Result
+from at.web import Element
+from atparser.app.core import BeautifulSoupEngine, SeleniumEngine
 from atparser.app.settings import *
 from atparser.app.utils import paths, state
-from at.web import Element
-from atparser.app.core import SeleniumEngine, BeautifulSoupEngine
-from PyQt5.QtCore import Qt, QThreadPool, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
 

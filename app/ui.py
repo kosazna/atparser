@@ -5,14 +5,13 @@ from typing import Optional, Tuple
 from at.gui.components import Console
 from at.gui.utils import set_size
 from at.logger import log
-from atparser.app.utils import paths, state
-from atparser.app.interface import SettingsTab, ParserTab, CreatorTab
+from atparser.app.interface import CreatorTab, ParserTab, SettingsTab
 from atparser.app.settings import *
+from atparser.app.utils import paths, state
 from PyQt5.QtCore import Qt, QThreadPool, pyqtSlot
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (QApplication, QHBoxLayout, QTabWidget,
                              QVBoxLayout, QWidget)
-
 
 cssGuide = paths.get_css(obj=True).joinpath("_style.css").read_text()
 
