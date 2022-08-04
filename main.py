@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*wwwwwwwwwwwwwwwwwwwww3wwwwwwwwwwwwwwwwww-
 import ctypes
 import sys
 
@@ -27,7 +27,7 @@ if __name__ == "__main__":
     app.setFont(SEGOE)
     app.setStyle('Fusion')
 
-    ui = WebParserUI(size=(None, 700))
+    ui = WebParserUI(size=APPSIZE)
     ui.show()
 
     sys.exit(app.exec_())

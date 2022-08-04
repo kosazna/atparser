@@ -35,7 +35,7 @@ class CreatorTab(AtWidget):
 
         self.history = ComboInput(label='History',
                                   labelsize=LABELSIZE,
-                                  combosize=(500, 24),
+                                  combosize=HISTORYSIZE,
                                   parent=self)
         self.elName = StrInput(label='Name',
                                labelsize=LABELSIZE,
@@ -67,7 +67,7 @@ class CreatorTab(AtWidget):
                                  checked=False,
                                  parent=self)
         self.buttonAddElement = Button(label='Add Element',
-                                       size=(120, 30),
+                                       size=BUTTONSIZE_HIGHLIGHT,
                                        parent=self)
 
         mainLayout.addWidget(self.history)

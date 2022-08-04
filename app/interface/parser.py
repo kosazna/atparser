@@ -53,23 +53,23 @@ class ParserTab(AtWidget):
                             parent=self)
 
         self.buttonRequest = Button(label='Request',
-                                    size=(100, 24),
+                                    size=BUTTONSIZE_REGULAR,
                                     parent=self)
 
         self.buttonLaunch = Button(label='Launch',
-                                   size=(100, 24),
+                                   size=BUTTONSIZE_REGULAR,
                                    parent=self)
 
         self.buttonRefresh = Button(label='Refresh',
-                                    size=(100, 24),
+                                    size=BUTTONSIZE_REGULAR,
                                     parent=self)
 
         self.buttonGetCookies = Button(label='Get Cookies',
-                                       size=(100, 24),
+                                       size=BUTTONSIZE_REGULAR,
                                        parent=self)
 
         self.buttonScroll = Button(label='Scroll down',
-                                   size=(100, 24),
+                                   size=BUTTONSIZE_REGULAR,
                                    parent=self)
 
         self.parseFromCombo = ComboInput(label='Parse from',
@@ -77,17 +77,17 @@ class ParserTab(AtWidget):
                                                 'Soup',
                                                 'Active element',
                                                 'History'),
-                                         combosize=(120, 24),
+                                         combosize=COMBOSIZE,
                                          parent=self)
         self.parseFromStatus = StatusLabel(statussize=(680, 22),
                                            parent=self)
 
         self.history = ComboInput(label='History',
-                                  combosize=(500, 24),
+                                  combosize=HISTORYSIZE,
                                   parent=self)
 
         self.buttonSetActiveFromHistory = Button(label='Set active',
-                                                 size=(100, 24),
+                                                 size=BUTTONSIZE_REGULAR,
                                                  parent=self)
 
         self.targetCombo = ComboInput(label='Target',
@@ -100,14 +100,14 @@ class ParserTab(AtWidget):
 
         self.findParams = ComboInput(label='Params',
                                      items=FIND_PARAMS,
-                                     combosize=(120, 24),
+                                     combosize=BUTTONSIZE_REGULAR,
                                      parent=self)
 
         self.elementParams = StrInput(parent=self)
 
         self.tagElem = ComboInput(label='Tag',
                                   items=MOST_COMMON_HTML_TAGS,
-                                  combosize=(120, 24),
+                                  combosize=COMBOSIZE,
                                   parent=self)
 
         self.classParam = StrInput(label='Class',
@@ -120,35 +120,35 @@ class ParserTab(AtWidget):
                                 parent=self)
 
         self.attrsCombo = ComboInput(label='Attrs',
-                                     combosize=(200, 24),
+                                     combosize=COMBOSIZE_XL,
                                      parent=self)
 
         self.buttonGetAttribute = Button(label='Get attribute',
-                                         size=(150, 24),
+                                         size=BUTTONSIZE_REGULAR_XL,
                                          parent=self)
 
         self.buttonFind = Button(label='Find Element',
                                  color='blue',
-                                 size=(200, 30),
+                                 size=BUTTONSIZE_HIGHLIGHT,
                                  parent=self)
         self.buttonSetActive = Button(label='Set active',
-                                      size=(150, 24),
+                                      size=BUTTONSIZE_REGULAR_XL,
                                       parent=self)
         self.buttonStore = Button(label='Add to history',
-                                        size=(150, 24),
+                                        size=BUTTONSIZE_REGULAR_XL,
                                         parent=self)
 
         self.buttonClick = Button(label='Click',
-                                        size=(150, 24),
+                                        size=BUTTONSIZE_REGULAR_XL,
                                         parent=self)
 
         self.status = StatusButton(parent=self)
 
         self.statusSelenium = StatusLabel('SE driver',
-                                          statussize=(160, 22),
+                                          statussize=STATUSSIZE,
                                           parent=self)
         self.statusBS = StatusLabel('BSE Soup',
-                                    statussize=(160, 22),
+                                    statussize=STATUSSIZE,
                                     parent=self)
 
         urlLayout.addWidget(self.url)
