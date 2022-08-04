@@ -80,7 +80,7 @@ class CreatorTab(AtWidget):
         mainLayout.addWidget(self.elAttribute)
         mainLayout.addWidget(self.elDefault)
         mainLayout.addWidget(self.elMany, alignment=Qt.AlignRight)
-        mainLayout.addWidget(HLine(),stretch=2, alignment=Qt.AlignTop)
+        mainLayout.addWidget(HLine(), stretch=2, alignment=Qt.AlignTop)
         mainLayout.addWidget(self.buttonAddElement, alignment=Qt.AlignHCenter)
 
         self.setLayout(mainLayout)
