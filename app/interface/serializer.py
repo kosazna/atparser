@@ -2,15 +2,13 @@
 import sys
 from typing import Any, Optional, Tuple
 
-from at.auth.client import AuthStatus
 from at.gui import *
 from at.logger import log
 from at.result import Result
-from at.web import Element
-from atparser.app.core import BeautifulSoupEngine, SeleniumEngine
+from at.web import Element, ElementStore
 from atparser.app.settings import *
 from atparser.app.utils import paths, state
-from PyQt5.QtCore import Qt, QThreadPool, pyqtSignal
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
 
@@ -26,6 +24,7 @@ class SerializerTab(AtWidget):
                  **kwargs) -> None:
         super().__init__(parent=parent, *args, **kwargs)
         self.initUi(size)
+        self.element_store = ElementStore()
 
     def setupUi(self, size):
         set_size(widget=self, size=size)
@@ -40,16 +39,15 @@ class SerializerTab(AtWidget):
         self.caterory = ComboInput(label='Category',
                                    labelsize=LABELSIZE,
                                    combosize=COMBOSIZE_XL,
-                                   items=('interaction',
-                                          'filters',
-                                          'data'),
+                                   items=ELEMENT_CATEGORIES,
                                    parent=self)
-        self.subcaterory = StrInput(label='Subcategory',
-                                    labelsize=LABELSIZE,
-                                    parent=self)
         self.childrenElem = ListWidget(label='Children',
                                        widgetsize=LISTSIZE,
                                        parent=self)
+
+        self.filepath = FileOutput(label='Filepath',
+                                   labelsize=LABELSIZE,
+                                   parent=self)
 
         self.buttonAddConfig = Button(label='Add to config',
                                       size=BUTTONSIZE_REGULAR_XL,
@@ -61,8 +59,8 @@ class SerializerTab(AtWidget):
 
         mainLayout.addWidget(self.elements)
         mainLayout.addWidget(self.caterory)
-        mainLayout.addWidget(self.subcaterory)
         mainLayout.addWidget(self.childrenElem)
+        mainLayout.addWidget(self.filepath)
         mainLayout.addWidget(self.buttonAddConfig)
         mainLayout.addWidget(self.buttonSerializer)
 
@@ -73,24 +71,39 @@ class SerializerTab(AtWidget):
     def initUi(self, size: tuple):
         self.setupUi(size)
         self.elements.addItems(state['history'].keys())
+        self.buttonAddConfig.subscribe(self.onAddToConfig)
+        self.buttonSerializer.subscribe(lambda : self.runThread(self.onSerialize))
 
     def getParams(self, key: Optional[str] = None):
         params = {
-            'engine': self.engineSelect.getCurrentText(),
-            'url': self.url.getText(),
-            'parse_from': self.parseFromCombo.getCurrentText(),
-            'history': self.history.getCurrentText(),
-            'target': self.targetCombo.getCurrentText(),
-            'selenium_find_by': self.findParams.getCurrentText(),
-            'selenium_find_params': self.elementParams.getText(),
-            'bs_tag': self.tagElem.getCurrentText(),
-            'bs_class': self.classParam.getText(),
-            'bs_id': self.idParam.getText(),
-            'bs_css': self.cssParam.getText(),
-            'attribute': self.attrsCombo.getCurrentText()
+            'element': self.elements.getCurrentText(),
+            'category': self.caterory.getCurrentText(),
+            'children': self.childrenElem.getCheckState(),
+            'filepath': self.filepath.getText()
         }
 
         return params if key is None else params.get(key)
+
+    def onAddToConfig(self):
+        params = self.getParams()
+
+        element: Element = state['elements'][params.get('element')]
+        category = params.get('category')
+        children = [state['elements'][el] for el in params.get('children')]
+
+        if children:
+            if len(children) == 1:
+                element.children = children[0]
+            else:
+                element.children = children
+
+        self.element_store.__dict__[category] = element
+
+    def onSerialize(self, _progress):
+        filepath = self.getParams('filepath')
+        self.element_store.to_json_config(filepath=filepath)
+
+        return Result.success('Config file created')
 
 
 if __name__ == '__main__':

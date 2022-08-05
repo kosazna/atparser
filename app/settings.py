@@ -35,6 +35,11 @@ if Path(f"C:/Users/{USERNAME}/.{APPNAME}/static/{ICONNAME}").exists():
 else:
     APPICON = ICONNAME
 
+ELEMENT_CATEGORIES = ('cookies',
+                      'paginator',
+                      'filters',
+                      'data')
+
 FIND_PARAMS = ('css selector',
                'class name',
                'tag name',
