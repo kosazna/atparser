@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*wwwwwwwwwwwwwwwwwwwww3wwwwwwwwwwwwwwwwww-
+# -*- coding: utf-8 -*-
 import ctypes
 import sys
 
