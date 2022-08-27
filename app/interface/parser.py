@@ -47,6 +47,7 @@ class ParserTab(AtWidget):
         actionElemLayout = QVBoxLayout()
         attrsLayout = QHBoxLayout()
         parseFromLayout = QHBoxLayout()
+        cssParamsLayout = QHBoxLayout()
 
         self.url = StrInput(label='URL',
                             parent=self)
@@ -118,6 +119,13 @@ class ParserTab(AtWidget):
         self.idParam = StrInput(label='Id',
                                 parent=self)
 
+        self.buttonConvert2Classes = Button(label='.classes',
+                                            size=BUTTONSIZE_REGULAR,
+                                            parent=self)
+        self.buttonConvert2Ids = Button(label='#ids',
+                                        size=BUTTONSIZE_REGULAR,
+                                        parent=self)
+
         self.attrsCombo = ComboInput(label='Attrs',
                                      combosize=COMBOSIZE_XL,
                                      parent=self)
@@ -177,7 +185,10 @@ class ParserTab(AtWidget):
         bs4ParamsLayout.addWidget(self.tagElem)
         bs4ParamsLayout.addWidget(self.classParam)
         bs4ParamsLayout.addWidget(self.idParam)
-        bs4ParamsLayout.addWidget(self.cssParam)
+        cssParamsLayout.addWidget(self.cssParam)
+        cssParamsLayout.addWidget(self.buttonConvert2Classes)
+        cssParamsLayout.addWidget(self.buttonConvert2Ids)
+        bs4ParamsLayout.addLayout(cssParamsLayout)
         mainLayout.addLayout(bs4ParamsLayout)
         mainLayout.addWidget(HLine())
         attrsLayout.addWidget(self.attrsCombo)
@@ -209,15 +220,20 @@ class ParserTab(AtWidget):
         self.parseFromCombo.subscribe(self.onParseFromChange)
         self.buttonLaunch.subscribe(self.onLaunch)
         self.buttonFind.subscribe(lambda: self.runThread(self.onFindElement))
-        self.buttonSetActive.subscribe(lambda: self.runThread(self.onSetActiveElement))
+        self.buttonSetActive.subscribe(
+            lambda: self.runThread(self.onSetActiveElement))
         self.buttonStore.subscribe(lambda: self.runThread(self.onStoreElement))
-        self.buttonSetActiveFromHistory.subscribe(lambda: self.runThread(self.onSetActiveFromHistory))
-        self.buttonGetAttribute.subscribe(lambda: self.runThread(self.onGetElementAttribute))
+        self.buttonSetActiveFromHistory.subscribe(
+            lambda: self.runThread(self.onSetActiveFromHistory))
+        self.buttonGetAttribute.subscribe(
+            lambda: self.runThread(self.onGetElementAttribute))
         self.buttonClick.subscribe(lambda: self.runThread(self.onClick))
         self.buttonGetCookies.subscribe(self.onGetCookies)
         self.buttonRefresh.subscribe(self.onRefresh)
         self.buttonScroll.subscribe(self.onScrollDown)
         self.buttonRequest.subscribe(lambda: self.runThread(self.onRequest))
+        self.buttonConvert2Classes.subscribe(self.onConvert2Classes)
+        self.buttonConvert2Ids.subscribe(self.onConvert2Ids)
         # self.cssParam.textChanged(self.parseCssSelector)
 
     def getParams(self, key: Optional[str] = None):
@@ -408,6 +424,16 @@ class ParserTab(AtWidget):
             self.parseFromCombo.setCurrentText('Active element')
         else:
             log.warning("No element was chosen from history")
+
+    def onConvert2Classes(self):
+        _text = self.getParams('bs_css')
+        new_text = _text.replace(' ', '.')
+        self.cssParam.setText(new_text)
+
+    def onConvert2Ids(self):
+        _text = self.getParams('bs_css')
+        new_text = _text.replace(' ', '#')
+        self.cssParam.setText(new_text)
 
 
 if __name__ == '__main__':
