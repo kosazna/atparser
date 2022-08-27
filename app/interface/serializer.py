@@ -32,6 +32,8 @@ class SerializerTab(AtWidget):
         mainLayout = QVBoxLayout()
         mainLayout.setContentsMargins(2, 4, 2, 0)
 
+        buttonLayout = QHBoxLayout()
+
         self.elements = ComboInput(label='Element',
                                    labelsize=LABELSIZE,
                                    combosize=HISTORYSIZE,
@@ -60,11 +62,10 @@ class SerializerTab(AtWidget):
         mainLayout.addWidget(self.elements)
         mainLayout.addWidget(self.caterory)
         mainLayout.addWidget(self.childrenElem)
-        mainLayout.addWidget(self.filepath)
-        mainLayout.addWidget(self.buttonAddConfig)
-        mainLayout.addWidget(self.buttonSerializer)
-
+        mainLayout.addWidget(self.buttonAddConfig, alignment=Qt.AlignRight)
         mainLayout.addWidget(HLine(), stretch=2, alignment=Qt.AlignTop)
+        mainLayout.addWidget(self.filepath)
+        mainLayout.addWidget(self.buttonSerializer, alignment=Qt.AlignHCenter)
 
         self.setLayout(mainLayout)
 
