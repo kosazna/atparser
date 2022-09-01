@@ -71,7 +71,7 @@ class SerializerTab(AtWidget):
 
     def initUi(self, size: tuple):
         self.setupUi(size)
-        self.elements.addItems(state['history'].keys())
+        self.elements.addItems(state.history.keys())
         self.buttonAddConfig.subscribe(self.onAddToConfig)
         self.buttonSerializer.subscribe(lambda : self.runThread(self.onSerialize))
 
@@ -88,9 +88,9 @@ class SerializerTab(AtWidget):
     def onAddToConfig(self):
         params = self.getParams()
 
-        element: Element = state['elements'][params.get('element')]
+        element: Element = state.elements[params.get('element')]
         category = params.get('category')
-        children = [state['elements'][el] for el in params.get('children')]
+        children = [state.elements[el] for el in params.get('children')]
 
         if children:
             if len(children) == 1:

@@ -32,7 +32,7 @@ class WebParserUI(QWidget):
     def setupUi(self, size):
         self.setObjectName("MainWidget")
         self.setStyleSheet(cssGuide)
-        self.setWindowTitle(f"{state['appname']}")
+        self.setWindowTitle(f"{state.appname}")
         self.move(150, 150)
 
         set_size(widget=self, size=size)
@@ -69,14 +69,14 @@ class WebParserUI(QWidget):
     @pyqtSlot()
     def onHistoryChanged(self):
         self.creatorTab.history.clearItems()
-        self.creatorTab.history.addItems(state['history'].keys())
+        self.creatorTab.history.addItems(state.history.keys())
 
     @pyqtSlot()
     def onCreatedElement(self):
         self.serializerTab.childrenElem.clearContent()
-        self.serializerTab.childrenElem.addItems(list(state['elements'].keys()))
+        self.serializerTab.childrenElem.addItems(list(state.elements.keys()))
         self.serializerTab.elements.clearItems()
-        self.serializerTab.elements.addItems(state['elements'].keys())
+        self.serializerTab.elements.addItems(state.elements.keys())
     # @pyqtSlot(tuple)
     # def onServerStatusChanged(self, status):
     #     self.filesTab.server.changeStatus(*status)

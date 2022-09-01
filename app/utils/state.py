@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from at.state import State
+from at.state import AppState
 from atparser.app.settings import *
 
+state = AppState(appname=APPNAME,
+                 version=VERSION,
+                 debug=DEBUG)
 
-state = State()
-state.set({'appname': APPNAME,
-           'version': VERSION,
-           'debug': DEBUG,
-           'webdriver': 'Firefox',
-           'paginator_delay': PAGINATOR_DELAY,
-           'launch_delay': LAUNCH_DELAY,
-           'urlchange_delay': URLCHANGE_DELAY,
-           'history': {},
-           'elements': {},
-           'config': {}})
+state.webdriver = 'Firefox'
+state.launch_delay = LAUNCH_DELAY
+state.urlchange_delay = URLCHANGE_DELAY
+state.paginator_delay = PAGINATOR_DELAY
+state.history = {}
+state.elements = {}
+state.config = {}

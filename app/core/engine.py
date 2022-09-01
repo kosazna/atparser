@@ -148,12 +148,12 @@ class SeleniumEngine:
 
     def set_active_from_history(self, element: str):
         _el_name = element
-        _el = state['history'][_el_name]
+        _el = state.history[_el_name]
         self.set_active(_el_name, _el)
 
     def store_element(self):
         if self.found_element_name:
-            state['history'].update({self.found_element_name: self.found_element})
+            state.history.update({self.found_element_name: self.found_element})
             log.success(f"\nElement [{self.found_element_name}] stored.\n")
         else:
             log.warning("No element to be stored")
@@ -288,12 +288,12 @@ class BeautifulSoupEngine:
 
     def set_active_from_history(self, element: str):
         _el_name = element
-        _el = state['history'][_el_name]
+        _el = state.history[_el_name]
         self.set_active(_el_name, _el)
 
     def store_element(self):
         if self.found_element_name:
-            state['history'].update({self.found_element_name: self.found_element})
+            state.history.update({self.found_element_name: self.found_element})
             log.success(f"\nElement [{self.found_element_name}] stored.\n")
         else:
             log.warning("No element to be stored")

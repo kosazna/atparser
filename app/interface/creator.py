@@ -89,7 +89,7 @@ class CreatorTab(AtWidget):
 
     def initUi(self, size: tuple):
         self.setupUi(size)
-        self.history.addItems(state['history'].keys())
+        self.history.addItems(state.history.keys())
         self.buttonAddElement.subscribe(self.onAddElement)
 
     def getParams(self, key: Optional[str] = None):
@@ -112,7 +112,7 @@ class CreatorTab(AtWidget):
 
         element = Element(**params)
 
-        state['elements'].update({str(element): element})
+        state.elements.update({str(element): element})
 
         self.elementAdded.emit()
 

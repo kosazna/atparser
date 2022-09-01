@@ -39,10 +39,10 @@ class SettingsTab(AtWidget):
         buttonLayout = QHBoxLayout()
 
         self.app = Label(icon='app',
-                         label=state['appname'],
+                         label=state.appname,
                          parent=self)
         self.version = Label(icon='hash',
-                             label=state['version'],
+                             label=state.version,
                              parent=self)
         self.driverSelect = ComboInput(label="WebDriver",
                                        labelsize=(140, 24),
@@ -92,10 +92,10 @@ class SettingsTab(AtWidget):
 
     def initUi(self, size: tuple):
         self.setupUi(size)
-        self.driverSelect.setCurrentText(state['webdriver'])
-        self.delayLaunch.setText(str(state['launch_delay']))
-        self.delayUrlChange.setText(str(state['urlchange_delay']))
-        self.delayPaginator.setText(str(state['paginator_delay']))
+        self.driverSelect.setCurrentText(state.webdriver)
+        self.delayLaunch.setText(str(state.launch_delay))
+        self.delayUrlChange.setText(str(state.urlchange_delay))
+        self.delayPaginator.setText(str(state.paginator_delay))
         self.checkDrivers()
         self.driverSelect.subscribe(self.onDriverChange)
         self.saveButton.subscribe(self.onSave)
@@ -117,11 +117,11 @@ class SettingsTab(AtWidget):
         self.checkDrivers()
 
     def onSave(self):
-        state['webdriver'] = self.driverSelect.getCurrentText()
+        state.webdriver = self.driverSelect.getCurrentText()
 
-        state['launch_delay'] = self.delayLaunch.getInt()
-        state['urlchange_delay'] = self.delayUrlChange.getInt()
-        state['paginator_delay'] = self.delayPaginator.getInt()
+        state.launch_delay = self.delayLaunch.getInt()
+        state.urlchange_delay = self.delayUrlChange.getInt()
+        state.paginator_delay = self.delayPaginator.getInt()
 
         self.settingsChanged.emit()
 

@@ -213,7 +213,7 @@ class ParserTab(AtWidget):
 
     def initUi(self, size: tuple):
         self.setupUi(size)
-        self.popup.set_appname(state['appname'])
+        self.popup.set_appname(state.appname)
         self.parseFromCombo.setCurrentText('Driver')
         self.statusSelenium.changeStatus('offline', 'statusError')
         self.statusBS.changeStatus('no data', 'statusError')
@@ -306,7 +306,7 @@ class ParserTab(AtWidget):
             log.error("No active element to click.")
 
     def onLaunch(self):
-        _webdriver = state['webdriver']
+        _webdriver = state.webdriver
         _url = self.getParams('url')
 
         if _webdriver == 'Firefox':
@@ -335,7 +335,7 @@ class ParserTab(AtWidget):
         else:
             self.parseFromStatus.setText('History')
             self.history.clearItems()
-            self.history.addItems(state['history'].keys())
+            self.history.addItems(state.history.keys())
 
     def onFindElement(self, _progress):
         params = self.getParams()
@@ -343,7 +343,7 @@ class ParserTab(AtWidget):
 
         if parse_from == 'History':
             _element = params['history']
-            origin = state['history'][_element]
+            origin = state.history[_element]
         else:
             origin = parse_from
 
@@ -411,7 +411,7 @@ class ParserTab(AtWidget):
         if _parseFrom == "History":
             _activeHistoryElement = self.history.getCurrentText()
             self.history.clearItems()
-            self.history.addItems(state['history'])
+            self.history.addItems(state.history)
             self.history.setCurrentText(_activeHistoryElement)
 
     def onSetActiveFromHistory(self, _progress):
