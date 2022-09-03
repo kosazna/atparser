@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from ctypes import alignment
 import sys
 from typing import Any, Optional, Tuple
 
@@ -48,6 +49,7 @@ class ParserTab(AtWidget):
         attrsLayout = QHBoxLayout()
         parseFromLayout = QHBoxLayout()
         cssParamsLayout = QHBoxLayout()
+        insertButtonLayout = QHBoxLayout()
 
         self.url = StrInput(label='URL',
                             parent=self)
@@ -126,6 +128,25 @@ class ParserTab(AtWidget):
                                         size=BUTTONSIZE_REGULAR,
                                         parent=self)
 
+        self.buttonInsertDiv = Button(label='div',
+                                      size=BUTTONSIZE_SMALL,
+                                      parent=self)
+        self.buttonInsertA = Button(label='a',
+                                      size=BUTTONSIZE_SMALL,
+                                      parent=self)
+        self.buttonInsertSpan = Button(label='span',
+                                      size=BUTTONSIZE_SMALL,
+                                      parent=self)
+        self.buttonInsertH2 = Button(label='h2',
+                                      size=BUTTONSIZE_SMALL,
+                                      parent=self)
+        self.buttonInsertImg = Button(label='img',
+                                      size=BUTTONSIZE_SMALL,
+                                      parent=self)
+        self.buttonInsertLi = Button(label='li',
+                                      size=BUTTONSIZE_SMALL,
+                                      parent=self)
+
         self.attrsCombo = ComboInput(label='Attrs',
                                      combosize=COMBOSIZE_XL,
                                      parent=self)
@@ -189,7 +210,14 @@ class ParserTab(AtWidget):
         cssParamsLayout.addWidget(self.buttonConvert2Classes)
         cssParamsLayout.addWidget(self.buttonConvert2Ids)
         bs4ParamsLayout.addLayout(cssParamsLayout)
+        insertButtonLayout.addWidget(self.buttonInsertDiv, alignment=Qt.AlignRight)
+        insertButtonLayout.addWidget(self.buttonInsertA)
+        insertButtonLayout.addWidget(self.buttonInsertSpan)
+        insertButtonLayout.addWidget(self.buttonInsertImg)
+        insertButtonLayout.addWidget(self.buttonInsertH2)
+        insertButtonLayout.addWidget(self.buttonInsertLi)
         mainLayout.addLayout(bs4ParamsLayout)
+        mainLayout.addLayout(insertButtonLayout)
         mainLayout.addWidget(HLine())
         attrsLayout.addWidget(self.attrsCombo)
         attrsLayout.addWidget(self.buttonGetAttribute, alignment=Qt.AlignRight)
@@ -234,7 +262,12 @@ class ParserTab(AtWidget):
         self.buttonRequest.subscribe(lambda: self.runThread(self.onRequest))
         self.buttonConvert2Classes.subscribe(self.onConvert2Classes)
         self.buttonConvert2Ids.subscribe(self.onConvert2Ids)
-        # self.cssParam.textChanged(self.parseCssSelector)
+        self.buttonInsertDiv.subscribe(lambda: self.cssParam.setText("div "))
+        self.buttonInsertA.subscribe(lambda: self.cssParam.setText("a "))
+        self.buttonInsertSpan.subscribe(lambda: self.cssParam.setText("span "))
+        self.buttonInsertImg.subscribe(lambda: self.cssParam.setText("img "))
+        self.buttonInsertH2.subscribe(lambda: self.cssParam.setText("h2 "))
+        self.buttonInsertLi.subscribe(lambda: self.cssParam.setText("li "))
 
     def getParams(self, key: Optional[str] = None):
         params = {
@@ -253,16 +286,6 @@ class ParserTab(AtWidget):
         }
 
         return params if key is None else params.get(key)
-
-    def parseCssSelector(self):
-        css_selector = self.getParams('bs_css')
-
-        splitted = css_selector.split('.')
-
-        if splitted:
-            tag = splitted[0]
-            if tag in MOST_COMMON_HTML_TAGS:
-                self.tagElem.setCurrentText(tag)
 
     def selectEngine(self):
         _engine = self.engineSelect.getCurrentText()

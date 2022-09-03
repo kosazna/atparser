@@ -118,7 +118,7 @@ class SeleniumEngine:
                             log.info(f"{_attr}: {_attrs[_attr]}")
                     self.found_element_name = name_tag
                     self.found_element = _elems
-                    self.store_element()
+                    self.store_element(element)
                 else:
                     log.warning(f"{element} wasn't found")
             else:
@@ -129,7 +129,7 @@ class SeleniumEngine:
                     log.info(f"{_attr}: {_attrs[_attr]}")
                 self.found_element_name = name_tag
                 self.found_element = _element
-                self.store_element()
+                self.store_element(element)
         else:
             log.warning(f"{element} wasn't found")
 
@@ -151,9 +151,10 @@ class SeleniumEngine:
         _el = state.history[_el_name]
         self.set_active(_el_name, _el)
 
-    def store_element(self):
+    def store_element(self, element):
         if self.found_element_name:
             state.history.update({self.found_element_name: self.found_element})
+            state.parsing_elems.update({self.found_element_name: element})
             log.success(f"\nElement [{self.found_element_name}] stored.\n")
         else:
             log.warning("No element to be stored")
@@ -258,7 +259,7 @@ class BeautifulSoupEngine:
                             log.info(f"{_attr}: {_attrs[_attr]}")
                     self.found_element_name = name_tag
                     self.found_element = _elems
-                    self.store_element()
+                    self.store_element(element)
                 else:
                     log.warning(f"{element} wasn't found")
             else:
@@ -269,7 +270,7 @@ class BeautifulSoupEngine:
                     log.info(f"{_attr}: {_attrs[_attr]}")
                 self.found_element_name = name_tag
                 self.found_element = _element
-                self.store_element()
+                self.store_element(element)
         else:
             log.warning(f"{element} wasn't found")
 
@@ -291,9 +292,10 @@ class BeautifulSoupEngine:
         _el = state.history[_el_name]
         self.set_active(_el_name, _el)
 
-    def store_element(self):
+    def store_element(self, element):
         if self.found_element_name:
             state.history.update({self.found_element_name: self.found_element})
+            state.parsing_elems.update({self.found_element_name: element})
             log.success(f"\nElement [{self.found_element_name}] stored.\n")
         else:
             log.warning("No element to be stored")

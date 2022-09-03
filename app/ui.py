@@ -69,14 +69,14 @@ class WebParserUI(QWidget):
     @pyqtSlot()
     def onHistoryChanged(self):
         self.creatorTab.history.clearItems()
-        self.creatorTab.history.addItems(state.history.keys())
+        self.creatorTab.history.addItems(list(state.history.keys()))
 
     @pyqtSlot()
     def onCreatedElement(self):
         self.serializerTab.childrenElem.clearContent()
         self.serializerTab.childrenElem.addItems(list(state.elements.keys()))
         self.serializerTab.elements.clearItems()
-        self.serializerTab.elements.addItems(state.elements.keys())
+        self.serializerTab.elements.addItems(list(state.elements.keys()))
     # @pyqtSlot(tuple)
     # def onServerStatusChanged(self, status):
     #     self.filesTab.server.changeStatus(*status)

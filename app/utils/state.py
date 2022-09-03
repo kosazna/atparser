@@ -12,5 +12,6 @@ state.launch_delay = LAUNCH_DELAY
 state.urlchange_delay = URLCHANGE_DELAY
 state.paginator_delay = PAGINATOR_DELAY
 state.history = {}
+state.parsing_elems = {}
 state.elements = {}
 state.config = {}

@@ -91,6 +91,7 @@ class CreatorTab(AtWidget):
         self.setupUi(size)
         self.history.addItems(state.history.keys())
         self.buttonAddElement.subscribe(self.onAddElement)
+        self.history.subscribe(self.onHistoryComboChange)
 
     def getParams(self, key: Optional[str] = None):
         params = {
@@ -116,6 +117,48 @@ class CreatorTab(AtWidget):
 
         self.elementAdded.emit()
 
+    def onHistoryComboChange(self):
+        _el_name = self.history.getCurrentText()
+        _el: Element = state.parsing_elems.get(_el_name)
+
+        if _el is not None:
+            props = _el.to_dict()
+
+            self.elCss.setText(props.get('css_selector', ''))
+            self.elTag.setCurrentText(props.get('tag_name', ''))
+            self.elClass.setText(props.get('class_name', ''))
+            self.elId.setText(props.get('id', ''))
+            self.elXpath.setText(props.get('xpath', ''))
+        
+        self.parseCssSelector()
+
+    def parseCssSelector(self):
+        css_selector = self.getParams('css_selector')
+
+        if '.' in css_selector:
+            splitted = css_selector.split('.')
+
+            if splitted:
+                tag = splitted[0]
+                if tag in MOST_COMMON_HTML_TAGS:
+                    self.elTag.setCurrentText(tag)
+            
+                if len(splitted) > 1:
+                    string = ' '.join(splitted[1:])
+                    self.elClass.setText(string)
+
+
+        if '#' in css_selector:
+            splitted = css_selector.split('#')
+
+            if splitted:
+                tag = splitted[0]
+                if tag in MOST_COMMON_HTML_TAGS:
+                    self.elTag.setCurrentText(tag)
+            
+                if len(splitted) > 1:
+                    string = ' '.join(splitted[1:])
+                    self.elId.setText(string)
 
 if __name__ == '__main__':
     cssGuide = paths.get_css(obj=True).joinpath("_style.css").read_text()
