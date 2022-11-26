@@ -7,10 +7,12 @@ from at.logger import log
 from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtWidgets import QApplication
 
-from atparser.app import WebParserUI
-from atparser.app.settings import *
 
 if __name__ == "__main__":
+    log.set_mode("GUI")
+
+    from atparser.app import WebParserUI
+    from atparser.app.settings import *
 
     appid = 'com.aztool.atparser.app'
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)
@@ -20,8 +22,6 @@ if __name__ == "__main__":
     else:
         SEGOE = QFont(FONT, FONTSIZE - 1)
 
-    log.set_mode("GUI")
-
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon(APPICON))
     app.setFont(SEGOE)
@@ -29,5 +29,7 @@ if __name__ == "__main__":
 
     ui = WebParserUI(size=APPSIZE)
     ui.show()
+
+    log.flush()
 
     sys.exit(app.exec_())
