@@ -38,6 +38,8 @@ else:
 
 ELEMENT_CATEGORIES = ('cookies',
                       'paginator',
+                      'gather',
+                      'follow',
                       'filters',
                       'data')
 
