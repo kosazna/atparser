@@ -8,13 +8,14 @@ from at.gui.worker import run_thread
 from at.logger import log
 from at.result import Result
 from at.io.utils import load_json, write_json
-from atparser.app.utils import paths, state
-from PyQt5.QtCore import Qt, QThreadPool, pyqtSignal
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
+from atparser.app.utils.path import paths
+from atparser.app.utils.state import state
+# from PyQt5.QtCore import Qt, QThreadPool, pyqtSignal
+# from PyQt5.QtGui import QFont
+# from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
 
 # When setting fixed width to QLineEdit ->
-# -> add alignment=Qt.AlignLeft when adding widget to layout
+# -> add alignment=Qt.AlignmentFlag.AlignLeft when adding widget to layout
 
 
 class SettingsTab(AtWidget):
@@ -70,23 +71,23 @@ class SettingsTab(AtWidget):
         self.status = StatusButton(parent=self)
 
         labelLayout.addWidget(self.app)
-        labelLayout.addWidget(self.version, stretch=2, alignment=Qt.AlignLeft)
+        labelLayout.addWidget(self.version, stretch=2, alignment=Qt.AlignmentFlag.AlignLeft)
         layout.addLayout(labelLayout)
         layout.addWidget(HLine())
         driverLayout.addWidget(self.driverSelect)
         driverLayout.addWidget(self.driverExist,
                                stretch=2,
-                               alignment=Qt.AlignLeft)
+                               alignment=Qt.AlignmentFlag.AlignLeft)
         layout.addLayout(driverLayout)
-        layout.addWidget(self.delayLaunch, alignment=Qt.AlignLeft)
-        layout.addWidget(self.delayUrlChange, alignment=Qt.AlignLeft)
-        layout.addWidget(self.delayPaginator, alignment=Qt.AlignLeft)
+        layout.addWidget(self.delayLaunch, alignment=Qt.AlignmentFlag.AlignLeft)
+        layout.addWidget(self.delayUrlChange, alignment=Qt.AlignmentFlag.AlignLeft)
+        layout.addWidget(self.delayPaginator, alignment=Qt.AlignmentFlag.AlignLeft)
 
-        buttonLayout.addWidget(self.saveButton, alignment=Qt.AlignRight)
+        buttonLayout.addWidget(self.saveButton, alignment=Qt.AlignmentFlag.AlignRight)
         layout.addLayout(buttonLayout)
 
         layout.addWidget(HLine())
-        layout.addWidget(self.status, stretch=2, alignment=Qt.AlignBottom)
+        layout.addWidget(self.status, stretch=2, alignment=Qt.AlignmentFlag.AlignBottom)
 
         self.setLayout(layout)
 

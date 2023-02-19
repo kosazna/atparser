@@ -9,13 +9,14 @@ from at.result import Result
 from at.web import Element
 from atparser.app.core import BeautifulSoupEngine, SeleniumEngine
 from atparser.app.settings import *
-from atparser.app.utils import paths, state
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
+from atparser.app.utils.path import paths
+from atparser.app.utils.state import state
+# from PyQt5.QtCore import Qt, pyqtSignal
+# from PyQt5.QtGui import QFont
+# from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
 
 # When setting fixed width to QLineEdit ->
-# -> add alignment=Qt.AlignLeft when adding widget to layout
+# -> add alignment=Qt.AlignmentFlag.AlignLeft when adding widget to layout
 
 
 class ParserTab(AtWidget):
@@ -181,14 +182,14 @@ class ParserTab(AtWidget):
 
         urlLayout.addWidget(self.url)
         topButtonLayout.addWidget(self.buttonRequest)
-        topButtonLayout.addWidget(self.buttonLaunch, alignment=Qt.AlignRight)
+        topButtonLayout.addWidget(self.buttonLaunch, alignment=Qt.AlignmentFlag.AlignRight)
         topButtonLayout.addWidget(self.buttonRefresh)
         topButtonLayout.addWidget(self.buttonScroll)
         topButtonLayout.addWidget(self.buttonGetCookies)
         urlLayout.addLayout(topButtonLayout)
         mainLayout.addLayout(urlLayout)
         mainLayout.addWidget(HLine())
-        mainLayout.addWidget(self.parseFromStatus, alignment=Qt.AlignHCenter)
+        mainLayout.addWidget(self.parseFromStatus, alignment=Qt.AlignmentFlag.AlignHCenter)
         parseFromLayout.addWidget(self.parseFromCombo)
         parseFromLayout.addWidget(self.statusSelenium)
         parseFromLayout.addWidget(self.statusBS)
@@ -210,7 +211,7 @@ class ParserTab(AtWidget):
         cssParamsLayout.addWidget(self.buttonConvert2Classes)
         cssParamsLayout.addWidget(self.buttonConvert2Ids)
         bs4ParamsLayout.addLayout(cssParamsLayout)
-        insertButtonLayout.addWidget(self.buttonInsertDiv, alignment=Qt.AlignRight)
+        insertButtonLayout.addWidget(self.buttonInsertDiv, alignment=Qt.AlignmentFlag.AlignRight)
         insertButtonLayout.addWidget(self.buttonInsertA)
         insertButtonLayout.addWidget(self.buttonInsertSpan)
         insertButtonLayout.addWidget(self.buttonInsertImg)
@@ -220,19 +221,19 @@ class ParserTab(AtWidget):
         mainLayout.addLayout(insertButtonLayout)
         mainLayout.addWidget(HLine())
         attrsLayout.addWidget(self.attrsCombo)
-        attrsLayout.addWidget(self.buttonGetAttribute, alignment=Qt.AlignRight)
+        attrsLayout.addWidget(self.buttonGetAttribute, alignment=Qt.AlignmentFlag.AlignRight)
         attrsLayout.addWidget(self.buttonClick)
         mainLayout.addLayout(attrsLayout)
         mainLayout.addWidget(HLine())
         actionElemLayout.addWidget(self.buttonSetActive)
         actionElemLayout.addWidget(self.buttonStore)
-        buttonLayout.addWidget(self.buttonFind, alignment=Qt.AlignCenter)
+        buttonLayout.addWidget(self.buttonFind, alignment=Qt.AlignmentFlag.AlignCenter)
         buttonLayout.addLayout(actionElemLayout)
         mainLayout.addLayout(buttonLayout)
-        mainLayout.addWidget(self.status, stretch=2, alignment=Qt.AlignBottom)
+        mainLayout.addWidget(self.status, stretch=2, alignment=Qt.AlignmentFlag.AlignBottom)
 
         # sideLayout.addWidget(self.statusSelenium)
-        # sideLayout.addWidget(self.statusBS, alignment=Qt.AlignTop, stretch=2)
+        # sideLayout.addWidget(self.statusBS, alignment=Qt.AlignmentFlag.AlignTop, stretch=2)
 
         # layout.addLayout(mainLayout)
         # layout.addLayout(sideLayout)

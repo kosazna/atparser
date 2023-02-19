@@ -6,7 +6,7 @@ from typing import Dict, List, Optional, Union
 from at.logger import log
 from at.web import (Element, get_dom_element_attributes, get_user_agent,
                     multi_parse_soup, parse_soup, request_soup, scroll_down)
-from atparser.app.utils import state
+from atparser.app.utils.state import state
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 from selenium import webdriver

@@ -2,16 +2,21 @@
 import sys
 from typing import Optional, Tuple
 
-from at.gui.components import Console
+# from at.gui.components import Console
 from at.gui.utils import set_size
 from at.logger import log
 from atparser.app.interface import CreatorTab, ParserTab, SettingsTab, SerializerTab
 from atparser.app.settings import *
-from atparser.app.utils import paths, state
-from PyQt5.QtCore import Qt, QThreadPool, pyqtSlot
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import (QApplication, QHBoxLayout, QTabWidget,
-                             QVBoxLayout, QWidget)
+from atparser.app.utils.path import paths
+from atparser.app.utils.state import state
+# from PyQt5.QtCore import Qt, QThreadPool, pyqtSlot
+# from PyQt5.QtGui import QFont
+# from PyQt5.QtWidgets import (QApplication, QHBoxLayout, QTabWidget,
+#                              QVBoxLayout, QWidget)
+
+from at.gui.components import (QApplication, QHBoxLayout, QTabWidget,
+                               QVBoxLayout, QWidget, Console, Qt, QThreadPool,
+                               pyqtSlot, QFont)
 
 cssGuide = paths.get_css(obj=True).joinpath("_style.css").read_text()
 
@@ -27,7 +32,6 @@ class WebParserUI(QWidget):
         self.threadpool = QThreadPool(parent=self)
         self.parserTab.historyChanged.connect(self.onHistoryChanged)
         self.creatorTab.elementAdded.connect(self.onCreatedElement)
-    
 
     def setupUi(self, size):
         self.setObjectName("MainWidget")

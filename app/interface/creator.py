@@ -9,13 +9,14 @@ from at.result import Result
 from at.web import Element
 from atparser.app.core import BeautifulSoupEngine, SeleniumEngine
 from atparser.app.settings import *
-from atparser.app.utils import paths, state
-from PyQt5.QtCore import Qt, QThreadPool, pyqtSignal
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
+from atparser.app.utils.path import paths
+from atparser.app.utils.state import state
+# from PyQt5.QtCore import Qt, QThreadPool, pyqtSignal
+# from PyQt5.QtGui import QFont
+# from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
 
 # When setting fixed width to QLineEdit ->
-# -> add alignment=Qt.AlignLeft when adding widget to layout
+# -> add alignment=Qt.AlignmentFlag.AlignLeft when adding widget to layout
 
 
 class CreatorTab(AtWidget):
@@ -81,9 +82,9 @@ class CreatorTab(AtWidget):
         mainLayout.addWidget(self.elXpath)
         mainLayout.addWidget(self.elAttribute)
         mainLayout.addWidget(self.elDefault)
-        mainLayout.addWidget(self.elMany, alignment=Qt.AlignRight)
-        mainLayout.addWidget(HLine(), stretch=2, alignment=Qt.AlignTop)
-        mainLayout.addWidget(self.buttonAddElement, alignment=Qt.AlignHCenter)
+        mainLayout.addWidget(self.elMany, alignment=Qt.AlignmentFlag.AlignRight)
+        mainLayout.addWidget(HLine(), stretch=2, alignment=Qt.AlignmentFlag.AlignTop)
+        mainLayout.addWidget(self.buttonAddElement, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         self.setLayout(mainLayout)
 

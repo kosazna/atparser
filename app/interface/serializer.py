@@ -7,13 +7,14 @@ from at.logger import log
 from at.result import Result
 from at.web import Element, ElementStore
 from atparser.app.settings import *
-from atparser.app.utils import paths, state
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
+from atparser.app.utils.path import paths
+from atparser.app.utils.state import state
+# from PyQt5.QtCore import Qt
+# from PyQt5.QtGui import QFont
+# from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget
 
 # When setting fixed width to QLineEdit ->
-# -> add alignment=Qt.AlignLeft when adding widget to layout
+# -> add alignment=Qt.AlignmentFlag.AlignLeft when adding widget to layout
 
 
 class SerializerTab(AtWidget):
@@ -62,10 +63,10 @@ class SerializerTab(AtWidget):
         mainLayout.addWidget(self.elements)
         mainLayout.addWidget(self.caterory)
         mainLayout.addWidget(self.childrenElem)
-        mainLayout.addWidget(self.buttonAddConfig, alignment=Qt.AlignRight)
-        mainLayout.addWidget(HLine(), stretch=2, alignment=Qt.AlignTop)
+        mainLayout.addWidget(self.buttonAddConfig, alignment=Qt.AlignmentFlag.AlignRight)
+        mainLayout.addWidget(HLine(), stretch=2, alignment=Qt.AlignmentFlag.AlignTop)
         mainLayout.addWidget(self.filepath)
-        mainLayout.addWidget(self.buttonSerializer, alignment=Qt.AlignHCenter)
+        mainLayout.addWidget(self.buttonSerializer, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         self.setLayout(mainLayout)
 
