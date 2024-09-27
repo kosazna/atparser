@@ -54,13 +54,7 @@ class SeleniumEngine:
                 f"user-agent={get_user_agent('chrome')}")
             self.driver = webdriver.Chrome(executable, options=chrome_options)
         elif browser == 'Firefox':
-            profile = webdriver.FirefoxProfile()
-            agent = get_user_agent('firefox')
-            profile.set_preference(
-                "general.useragent.override", agent)
-            self.driver = webdriver.Firefox(firefox_profile=profile,
-                                            executable_path=executable,
-                                            service_log_path=os.devnull)
+            self.driver = webdriver.Firefox()
             self.driver.maximize_window()
         else:
             print(f'Browser not supported: {browser}')

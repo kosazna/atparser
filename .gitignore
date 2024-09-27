@@ -8,3 +8,4 @@ test.py
 geckodriver.log
 test.ipynb
 geckodriver.log
+.env
